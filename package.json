@@ -1,7 +1,6 @@
 {
   "name": "fut-booking-back",
   "version": "1.0.0",
-  "description": "",
   "main": "handler.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/JAEdARAZ/fut-booking-back/issues"
   },
-  "homepage": "https://github.com/JAEdARAZ/fut-booking-back#readme"
+  "homepage": "https://github.com/JAEdARAZ/fut-booking-back#readme",
+  "type": "module",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.348.0",
+    "@aws-sdk/lib-dynamodb": "^3.348.0"
+  }
 }

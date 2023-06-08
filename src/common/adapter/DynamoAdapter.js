@@ -21,8 +21,14 @@ export default class DynamoAdapter {
     this.dynamoDocClient = DynamoDBDocument.from(this.dynamoClient, translateConfig);
   }
 
-  hello() {
-    return "hello mate!";
+  async getByKey(TableName, PK, SK) {
+    const params = {
+      TableName,
+      Key: {PK, SK},
+      ReturnConsumedCapacity: "TOTAL"
+    }
+
+    return this.dynamoDocClient.get(params);
   }
 
   async queryByKey(TableName, PK, SK) {

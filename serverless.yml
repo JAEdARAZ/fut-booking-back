@@ -41,6 +41,19 @@ functions:
     iamRoleStatements:
         - Effect: "Allow"
           Action:
+            - dynamodb:GetItem
+          Resource:
+            - !GetAtt FutBookingTable.Arn
+  getFields:
+    handler: src/functions/getFields/index.handler
+    package:
+      patterns:
+        - src/common/**
+        - package.json
+        - src/functions/getFields/**
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
             - dynamodb:Query
           Resource:
             - !GetAtt FutBookingTable.Arn

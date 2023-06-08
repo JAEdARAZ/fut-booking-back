@@ -1,6 +1,6 @@
 import DynamoAdapter from "../adapter/DynamoAdapter.js";
 import Field from "../entities/Field.js";
-
+const FIELD_PK = "F#FIELD";
 
 export default class FieldsService {
   constructor() {
@@ -9,19 +9,14 @@ export default class FieldsService {
   }
 
   async getField(fieldId) {
-    const response = await this.dynamoAdapter.queryByKey(this.tableName, "F#FIELD", `F#${fieldId}`);
-    const item = response.Items[0];
-    if (item) {
-      return new Field({ 
-        PK: item.PK, 
-        SK: item.SK, 
-        fieldId: item.fieldId, 
-        location: item.location, 
-        locationGM: item.locationGM, 
-        photoURL: item.photoURL
-      });
-    }
+    const response = await this.dynamoAdapter.getByKey(this.tableName, FIELD_PK, `F#${fieldId}`);
+    const item = response.Item;
+    return item ? Field.fromItem(item) : item;
+  }
 
-    return item;
+  async getFields() {
+    const response = await this.dynamoAdapter.queryByKey(this.tableName, FIELD_PK);
+    const items = response.Items;
+    return items.map(item => Field.fromItem(item));
   }
 }

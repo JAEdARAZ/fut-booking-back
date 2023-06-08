@@ -24,4 +24,23 @@ export default class DynamoAdapter {
   hello() {
     return "hello mate!";
   }
+
+  async queryByKey(TableName, PK, SK) {
+    let keyConditionExpression = "PK = :PK";
+    if (SK) {
+      keyConditionExpression = `${keyConditionExpression} AND SK >= :SK`;
+    }
+
+    const params = {
+      TableName,
+      KeyConditionExpression: keyConditionExpression,
+      ExpressionAttributeValues: {
+        ":PK": PK,
+        ... (SK && { ":SK": SK })
+      },
+      ReturnConsumedCapacity: "TOTAL"
+    }
+
+    return this.dynamoDocClient.query(params);
+  }
 }

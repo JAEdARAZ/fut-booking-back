@@ -1,97 +1,95 @@
 service: fut-booking-back
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+app: fut-booking
 
 frameworkVersion: "3"
+
+plugins:
+  - serverless-iam-roles-per-function
 
 provider:
   name: aws
   runtime: nodejs18.x
   stage: dev
   region: us-east-1
+  
+  environment:
+    futBookingTableName: ${self:custom.futBookingTableName}
 
-# you can add statements to the Lambda function's IAM Role here
-#  iam:
-#    role:
-#      statements:
-#        - Effect: "Allow"
-#          Action:
-#            - "s3:ListBucket"
-#          Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#        - Effect: "Allow"
-#          Action:
-#            - "s3:PutObject"
-#          Resource:
-#            Fn::Join:
-#              - ""
-#              - - "arn:aws:s3:::"
-#                - "Ref" : "ServerlessDeploymentBucket"
-#                - "/*"
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
-
-# you can add packaging information here
 package:
+  individually: true
   patterns:
-    # - '!package-lock.json'
-    # - '!package.json'
-    - src/common/**
+    - "!**/*"
+
+custom:
+  futBookingTableName: ${self:provider.stage}-fut-booking
 
 functions:
   getGames:
     handler: src/functions/getGames/index.handler
+    package:
+      patterns:
+        - src/common/**
+        - package.json
+        - src/functions/getGames/**
+  getField:
+    handler: src/functions/getField/index.handler
+    package:
+      patterns:
+        - src/common/**
+        - package.json
+        - src/functions/getField/**
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:Query
+          Resource:
+            - !GetAtt FutBookingTable.Arn
 
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-#    events:
-#      - httpApi:
-#          path: /users/create
-#          method: get
-#      - websocket: $connect
-#      - s3: ${env:BUCKET}
-#      - schedule: rate(10 minutes)
-#      - sns: greeter-topic
-#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
-#      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
-#      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
-#      - iot:
-#          sql: "SELECT * FROM 'some_topic'"
-#      - cloudwatchEvent:
-#          event:
-#            source:
-#              - "aws.ec2"
-#            detail-type:
-#              - "EC2 Instance State-change Notification"
-#            detail:
-#              state:
-#                - pending
-#      - cloudwatchLog: '/aws/lambda/hello'
-#      - cognitoUserPool:
-#          pool: MyUserPool
-#          trigger: PreSignUp
-#      - alb:
-#          listenerArn: arn:aws:elasticloadbalancing:us-east-1:XXXXXX:listener/app/my-load-balancer/50dc6c495c0c9188/
-#          priority: 1
-#          conditions:
-#            host: example.com
-#            path: /hello
-
-#    Define function environment variables here
-#    environment:
-#      variable2: value2
-
-# you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+resources:
+  Resources:
+    FutBookingTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.futBookingTableName}
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+          - AttributeName: gameWeek
+            AttributeType: S
+          - AttributeName: gameDateTime
+            AttributeType: S
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: gameWeek-gameDateTime-index
+            KeySchema:
+              - AttributeName: gameWeek
+                KeyType: HASH
+              - AttributeName: gameDateTime
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          - IndexName: SK-gameDateTime-index
+            KeySchema:
+              - AttributeName: SK
+                KeyType: HASH
+              - AttributeName: gameDateTime
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE

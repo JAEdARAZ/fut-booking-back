@@ -57,6 +57,19 @@ functions:
             - dynamodb:Query
           Resource:
             - !GetAtt FutBookingTable.Arn
+  createField:
+    handler: src/functions/createField/index.handler
+    package:
+      patterns:
+        - src/common/**
+        - package.json
+        - src/functions/createField/**
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:PutItem
+          Resource:
+            - !GetAtt FutBookingTable.Arn
 
 resources:
   Resources:

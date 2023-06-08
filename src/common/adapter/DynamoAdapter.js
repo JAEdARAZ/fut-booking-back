@@ -21,10 +21,20 @@ export default class DynamoAdapter {
     this.dynamoDocClient = DynamoDBDocument.from(this.dynamoClient, translateConfig);
   }
 
+  async createItem(TableName, item) {
+    const params = {
+      TableName,
+      Item: item.toItem(),
+      ReturnConsumedCapacity: 'TOTAL'
+    }
+
+    await this.create(params);
+  }
+
   async getByKey(TableName, PK, SK) {
     const params = {
       TableName,
-      Key: {PK, SK},
+      Key: { PK, SK },
       ReturnConsumedCapacity: "TOTAL"
     }
 
@@ -48,5 +58,9 @@ export default class DynamoAdapter {
     }
 
     return this.dynamoDocClient.query(params);
+  }
+
+  async create(params) {
+    return this.dynamoDocClient.put(params);
   }
 }

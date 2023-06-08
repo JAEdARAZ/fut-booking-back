@@ -1,11 +1,15 @@
 import DynamoAdapter from "../adapter/DynamoAdapter.js";
-import Field from "../entities/Field.js";
-const FIELD_PK = "F#FIELD";
+import Field, { FIELD_PK } from "../entities/Field.js";
 
 export default class FieldsService {
   constructor() {
     this.dynamoAdapter = new DynamoAdapter();
     this.tableName = process.env.futBookingTableName;
+  }
+
+  async create(field) {
+    const aux = new Field(field);
+    await this.dynamoAdapter.createItem(this.tableName, aux);
   }
 
   async getField(fieldId) {

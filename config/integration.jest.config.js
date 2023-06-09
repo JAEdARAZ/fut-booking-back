@@ -11,11 +11,9 @@ config({
   testEnvironment: 'node'
 })
 
-const configuration = {
+export default {
   testEnvironment: "node",
   roots: ['../__tests__/'],
   testMatch: ['**/*.(int|integration).js'],
   testTimeout: 60000 * 2 //2 minutes
-}
-
-export default configuration; 
+} 

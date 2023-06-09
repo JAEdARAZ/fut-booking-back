@@ -1,7 +1,7 @@
 import FieldsService from "../../../src/common/services/FieldsService.js";
 
-describe('Create field integration test', () => {
-  it('Create new field', async () => {
+describe("Create field integration test", () => {
+  it("Create new field", async () => {
     const field = {
       location: "Test Location",
       locationGM: "https://goo.gl/maps/5J4VymhaWm6upaLa8",

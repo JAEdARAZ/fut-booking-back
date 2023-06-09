@@ -38,19 +38,6 @@ functions:
         - src/common/**
         - package.json
         - src/functions/getGames/**
-  getField:
-    handler: src/functions/getField/index.handler
-    package:
-      patterns:
-        - src/common/**
-        - package.json
-        - src/functions/getField/**
-    iamRoleStatements:
-        - Effect: "Allow"
-          Action:
-            - dynamodb:GetItem
-          Resource:
-            - !GetAtt FutBookingTable.Arn
   getFields:
     handler: src/functions/getFields/index.handler
     events:

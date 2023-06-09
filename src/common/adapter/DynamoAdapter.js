@@ -25,7 +25,7 @@ export default class DynamoAdapter {
     const params = {
       TableName,
       Item: item.toItem(),
-      ReturnConsumedCapacity: 'TOTAL'
+      ReturnConsumedCapacity: "TOTAL"
     }
 
     await this.create(params);

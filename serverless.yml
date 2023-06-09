@@ -5,15 +5,18 @@ frameworkVersion: "3"
 
 plugins:
   - serverless-iam-roles-per-function
+  - serverless-export-env
 
 provider:
   name: aws
   runtime: nodejs18.x
-  stage: dev
-  region: us-east-1
-  
+  stage: ${self:custom.deployment.globalStages.stage}
+  profile: ${self:custom.deployment.profile.${self:provider.stage}}
+  region: ${self:custom.deployment.region.${self:provider.stage}}
   environment:
     futBookingTableName: ${self:custom.futBookingTableName}
+    httpApiGatewayEndpointId: !Ref HttpApi
+    region: ${self:provider.region}
 
 package:
   individually: true
@@ -21,7 +24,11 @@ package:
     - "!**/*"
 
 custom:
+  deployment: ${file(config/deployment.yml):deployment}
   futBookingTableName: ${self:provider.stage}-fut-booking
+  export-env:
+    filename: .awsenv
+    overwrite: true
 
 functions:
   getGames:
@@ -46,6 +53,10 @@ functions:
             - !GetAtt FutBookingTable.Arn
   getFields:
     handler: src/functions/getFields/index.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /fields
     package:
       patterns:
         - src/common/**
@@ -59,6 +70,10 @@ functions:
             - !GetAtt FutBookingTable.Arn
   createField:
     handler: src/functions/createField/index.handler
+    events:
+      - httpApi:
+          method: POST
+          path: /fields
     package:
       patterns:
         - src/common/**

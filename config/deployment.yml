@@ -1,0 +1,7 @@
+deployment:
+  profile:
+    dev: default
+  region:
+    dev: us-east-1
+  globalStages:
+    stage: dev

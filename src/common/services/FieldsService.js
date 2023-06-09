@@ -8,8 +8,9 @@ export default class FieldsService {
   }
 
   async create(field) {
-    const aux = new Field(field);
-    await this.dynamoAdapter.createItem(this.tableName, aux);
+    field = new Field(field);
+    await this.dynamoAdapter.createItem(this.tableName, field);
+    return field;
   }
 
   async getField(fieldId) {

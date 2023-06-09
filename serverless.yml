@@ -11,7 +11,6 @@ provider:
   name: aws
   runtime: nodejs18.x
   stage: ${self:custom.deployment.globalStages.stage}
-  profile: ${self:custom.deployment.profile.${self:provider.stage}}
   region: ${self:custom.deployment.region.${self:provider.stage}}
   environment:
     futBookingTableName: ${self:custom.futBookingTableName}

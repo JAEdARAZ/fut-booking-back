@@ -36,6 +36,7 @@ functions:
       patterns:
         - src/common/**
         - package.json
+        - node_modules/**
         - src/functions/getGames/**
   getFields:
     handler: src/functions/getFields/index.handler
@@ -47,6 +48,7 @@ functions:
       patterns:
         - src/common/**
         - package.json
+        - node_modules/**
         - src/functions/getFields/**
     iamRoleStatements:
         - Effect: "Allow"
@@ -64,6 +66,7 @@ functions:
       patterns:
         - src/common/**
         - package.json
+        - node_modules/**
         - src/functions/createField/**
     iamRoleStatements:
         - Effect: "Allow"

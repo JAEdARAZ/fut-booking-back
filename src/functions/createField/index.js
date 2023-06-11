@@ -3,7 +3,6 @@ import { middify } from "../../common/middy/handlers.js"
 import schema from "./schema.js";
 
 const lambdaHandler = async (event) => {
-  console.log(event);
   const field = event.body;
   const fieldsService = new FieldsService();
   return fieldsService.create(field);

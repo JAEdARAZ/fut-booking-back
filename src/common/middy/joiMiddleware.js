@@ -1,14 +1,11 @@
-const defaults = {}
+import AppError, { ErrorTypes } from "./AppError.js";
 
-const joiMiddleware = (opts) => {
-  const options = { ...defaults, ...opts };
-
+const joiMiddleware = (schema) => {
   const customMiddlewareBefore = async (request) => {
     const { event } = request;
-    const schema = options.schema;
     const { error } = schema.validate(event.body);
     if (error) {
-      console.log("JOI validation error: ", error.message);
+      throw new AppError(ErrorTypes.BAD_REQUEST);
     }
   }
 

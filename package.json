@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@middy/core": "^4.5.1",
+    "@middy/http-error-handler": "^4.5.1",
     "@middy/http-json-body-parser": "^4.5.1",
     "joi": "^17.9.2"
   },

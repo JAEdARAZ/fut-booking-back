@@ -2,10 +2,13 @@ import { randomBytes } from "crypto";
 export const FIELD_PK = "F#FIELD";
 
 export default class Field {
-  constructor({ location, locationGM, photoURL }) {
-    const id = this.generateId();
-    this.PK = FIELD_PK;
-    this.SK = `F#${id}`;
+  constructor({ fieldId, location, locationGM, photoURL }) {
+    const id = fieldId || this.generateId();
+    if (!fieldId) {
+      this.PK = FIELD_PK;
+      this.SK = `F#${id}`;
+    }
+
     this.fieldId = id;
     this.location = location;
     this.locationGM = locationGM;

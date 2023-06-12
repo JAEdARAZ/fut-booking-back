@@ -4,8 +4,14 @@ import httpErrorHandler from "@middy/http-error-handler";
 import joiMiddleware from "./joiMiddleware.js";
 
 export const middify = (handler, schema) => {
-  return middy(handler)
-    .use(httpJsonBodyParser())
-    .use(joiMiddleware(schema))
-    .use(httpErrorHandler());
+  if (schema) {
+    return middy(handler)
+      .use(httpJsonBodyParser())
+      .use(joiMiddleware(schema))
+      .use(httpErrorHandler());
+  } else {
+    return middy(handler)
+      .use(httpJsonBodyParser())
+      .use(httpErrorHandler());
+  }
 }

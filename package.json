@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "export-env-local": "sls export-env --all",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --config config/unit.jest.config.js",
     "integration": "npm run export-env-local && NODE_OPTIONS=--experimental-vm-modules jest --config config/integration.jest.config.js"
   },
   "keywords": [],

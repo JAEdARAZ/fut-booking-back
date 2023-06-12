@@ -18,4 +18,10 @@ describe("Fields service", () => {
     expect(getResult.photoURL).toBe(createResult.photoURL);
     await expect(service.deleteField(createResult.fieldId)).resolves.not.toThrow();
   })
+
+  it("Get fields", async () => {
+    const service = new FieldsService();
+    const getResults = await service.getFields();
+    expect(Array.isArray(getResults)).toBeTruthy();
+  })
 })

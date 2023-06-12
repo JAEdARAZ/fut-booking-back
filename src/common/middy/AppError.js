@@ -12,5 +12,5 @@ export default class AppError extends Error {
 }
 
 export const ErrorTypes = Object.freeze({
-  BAD_REQUEST: { message: "Bad request mate", statusCode: 400 }
+  BAD_REQUEST: { message: "Bad request", statusCode: 400 }
 })

@@ -24,11 +24,21 @@ export default class DynamoAdapter {
   async createItem(TableName, item) {
     const params = {
       TableName,
-      Item: item.toItem(),
+      Item: item,
       ReturnConsumedCapacity: "TOTAL"
     }
 
-    await this.create(params);
+    return await this.create(params);
+  }
+
+  async deleteItem(TableName, PK, SK) {
+    const params = {
+      TableName,
+      Key: { PK, SK },
+      ReturnConsumedCapacity: "TOTAL"
+    }
+
+    return await this.delete(params);
   }
 
   async getByKey(TableName, PK, SK) {
@@ -62,5 +72,9 @@ export default class DynamoAdapter {
 
   async create(params) {
     return this.dynamoDocClient.put(params);
+  }
+
+  async delete(params) {
+    return this.dynamoDocClient.delete(params);
   }
 }

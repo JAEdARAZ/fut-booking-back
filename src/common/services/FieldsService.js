@@ -9,7 +9,7 @@ export default class FieldsService {
 
   async create(field) {
     field = new Field(field);
-    await this.dynamoAdapter.createItem(this.tableName, field);
+    await this.dynamoAdapter.createItem(this.tableName, field.toItem());
     return field;
   }
 
@@ -23,5 +23,9 @@ export default class FieldsService {
     const response = await this.dynamoAdapter.queryByKey(this.tableName, FIELD_PK);
     const items = response.Items;
     return items.map(item => Field.fromItem(item));
+  }
+
+  async deleteField(fieldId) {
+    await this.dynamoAdapter.deleteItem(this.tableName, FIELD_PK, `F#${fieldId}`);
   }
 }

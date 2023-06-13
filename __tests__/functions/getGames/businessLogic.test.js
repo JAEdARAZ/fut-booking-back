@@ -21,8 +21,8 @@ describe("Get games buiness logic", () => {
 
   it("Gets correct week number for sunday", () => {
     jest.useFakeTimers().setSystemTime(new Date(sunday));
-    const weekNumber20230605 = "23/2023";
+    const weekNumber20230611 = "23/2023";
     const responseDate = getCurrentWeekNumber();
-    expect(responseDate).toBe(weekNumber20230605);
+    expect(responseDate).toBe(weekNumber20230611);
   });
 })

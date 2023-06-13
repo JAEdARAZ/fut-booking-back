@@ -1,6 +1,7 @@
 
 export const getCurrentWeekNumber = () => {
   const currentDate = new Date();
+  console.log(currentDate);
   const currentYear = currentDate.getFullYear();
   const startDate = new Date(currentYear, 0, 1);
   const numberOfDays = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));

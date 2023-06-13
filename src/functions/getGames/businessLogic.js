@@ -4,8 +4,11 @@ export const getCurrentWeekNumber = () => {
   console.log(currentDate);
   const currentYear = currentDate.getFullYear();
   const startDate = new Date(currentYear, 0, 1);
+  console.log(startDate);
   const numberOfDays = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
+  console.log(numberOfDays);
   const currentWeek = Math.ceil((startDate.getDay() + 1 + numberOfDays) / 7);
+  console.log(currentWeek);
 
   return `${currentWeek}/${currentYear}`;
 }

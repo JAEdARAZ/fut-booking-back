@@ -47,7 +47,7 @@ functions:
           Action:
             - dynamodb:Query
           Resource:
-            - !GetAtt FutBookingTable.Arn
+            - !Sub '${FutBookingTable.Arn}/index/*'
   getFields:
     handler: src/functions/getFields/index.handler
     events:

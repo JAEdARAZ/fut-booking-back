@@ -1,5 +1,5 @@
-import DynamoEntity from "./DynamoEntity";
-import Field from "./Field";
+import DynamoEntity from "./DynamoEntity.js";
+import Field from "./Field.js";
 
 export default class Game extends DynamoEntity {
   constructor({ id, field, gameWeek, gameDateTime, playersTotal }) {

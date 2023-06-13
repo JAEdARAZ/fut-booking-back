@@ -1,13 +1,29 @@
+import DynamoEntity from "./DynamoEntity";
 import Field from "./Field";
 
+export default class Game extends DynamoEntity {
+  constructor({ id, field, gameWeek, gameDateTime, playersTotal }) {
+    super();
+    const gameId = id || this.generateId();
+    if (!id) {
+      this.PK = `G#${gameId}`;
+      this.SK = `G#${gameId}`;
+    }
 
-export default class Game {
-  constructor({ PK, SK, field, gameDateTime, gameWeek, playersTotal }) {
-    this.PK = PK;
-    this.SK = SK;
+    this.id = gameId;
     this.field = new Field(field);
-    this.gameDateTime = gameDateTime;
     this.gameWeek = gameWeek;
+    this.gameDateTime = gameDateTime;
     this.playersTotal = playersTotal;
+  }
+
+  static fromItem(item) {
+    return new Game({
+      id: item.id,
+      field: Field.fromItem(item.field),
+      gameWeek: item.gameWeek,
+      gameDateTime: item.gameDateTime,
+      playersTotal: item.playersTotal
+    })
   }
 }

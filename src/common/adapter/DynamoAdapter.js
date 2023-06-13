@@ -1,6 +1,14 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 
+export const INDEXES = {
+  gameWeekGameDateTime: {
+    name: "gameWeek-gameDateTime-index",
+    PK: "gameWeek",
+    SK: "gameDateTime"
+  }
+}
+
 const translateConfig = {
   marshallOptions: {
     convertEmptyValues: false,
@@ -63,6 +71,25 @@ export default class DynamoAdapter {
       ExpressionAttributeValues: {
         ":PK": PK,
         ... (SK && { ":SK": SK })
+      },
+      ReturnConsumedCapacity: "TOTAL"
+    }
+
+    return this.dynamoDocClient.query(params);
+  }
+
+  async queryIndexByKey(TableName, index, PK, SK, skCondition) {
+    const params = {
+      TableName,
+      IndexName: index.name,
+      KeyConditionExpression: `#PK = :PK AND #SK ${skCondition} :SK`,
+      ExpressionAttributeNames: {
+        "#PK": index.PK,
+        "#SK": index.SK,
+      },
+      ExpressionAttributeValues: {
+        ":PK": PK,
+        ":SK": SK
       },
       ReturnConsumedCapacity: "TOTAL"
     }

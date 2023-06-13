@@ -1,13 +1,14 @@
-import DynamoAdapter from "../../common/adapter/DynamoAdapter.js"
+import { middify } from "../../common/middy/handlers.js";
+import GamesService from "../../common/services/GamesService.js";
+import { getCurrentWeekNumber, getStartOfCurrentDateString } from "./businessLogic.js";
 
-export const handler = async () => {
-  const adapter = new DynamoAdapter();
-  console.log(adapter.hello());
+const lambdaHandler = async () => {
+  const service = new GamesService();
+  const currentWeek = getCurrentWeekNumber();
+  const startOfCurrentDate = getStartOfCurrentDateString();
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-    })
-  };
+  const games = await service.getWeekGames(currentWeek, startOfCurrentDate);
+  return games;
 }
+
+export const handler = middify(lambdaHandler);

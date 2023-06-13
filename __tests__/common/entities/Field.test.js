@@ -17,7 +17,7 @@ describe("Field entity", () => {
     expect(actual.photoURL).toBe(params.photoURL);
   })
 
-  it("Create Field from fieldId", () => {
+  it("Create Field with fieldId", () => {
     const params = {
       fieldId: "11223344",
       location: "Test Location",

@@ -12,4 +12,10 @@ export default class GamesService {
     const items = response.Items;
     return items.map(item => Game.fromItem(item));
   }
+
+  async getWeekGamesWithDayLimit(weekNumber, limitDate) {
+    const response = await this.dynamoAdapter.queryIndexByKey(this.tableName, INDEXES.gameWeekGameDateTime, weekNumber, limitDate, "<=");
+    const items = response.Items;
+    return items.map(item => Game.fromItem(item));
+  }
 }

@@ -1,21 +1,36 @@
+const DATE_LENGTH = "yyyy-mm-dd".length;
 
-export const getCurrentWeekNumber = () => {
+export const getWeekNumber = (date) => {
   //remove timezone
   // Set to nearest Thursday: current date + 4 - current day number
   // Make Sunday's day number 7
-  let currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  currentDate = new Date(Date.UTC(currentYear, currentDate.getMonth(), currentDate.getDate()));
-  currentDate.setUTCDate(currentDate.getUTCDate() + 4 - (currentDate.getUTCDay() || 7));
+  const currentYear = date.getFullYear();
+  date = new Date(Date.UTC(currentYear, date.getMonth(), date.getDate()));
+  date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
 
   const yearStart = new Date(Date.UTC(currentYear, 0, 1));
-  const weekNumber = Math.ceil((((currentDate - yearStart) / 86400000) + 1) / 7);
+  const weekNumber = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
 
   return `${weekNumber}/${currentYear}`;
 }
 
-export const getStartOfCurrentDateString = () => {
-  const dateLength = "yyyy-mm-dd".length;
-  const currentDate = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Oslo" }).substring(0, dateLength);
+export const getStartOfDateString = (date) => {
+  const currentDate = date.toLocaleString("sv-SE", { timeZone: "Europe/Oslo" }).substring(0, DATE_LENGTH);
   return `${currentDate}T00:00:00`;
+}
+
+export const getEndOfDateString = (date) => {
+  const currentDate = date.toLocaleString("sv-SE", { timeZone: "Europe/Oslo" }).substring(0, DATE_LENGTH);
+  return `${currentDate}T23:59:59`;
+}
+
+export const addDaysToDate = (date, days) => {
+  const addedDaysDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  addedDaysDate.setDate(addedDaysDate.getDate() + days);
+  return addedDaysDate;
+}
+
+export const isMonday = () => {
+  const mondayIndex = 1;
+  return new Date().getDay() == mondayIndex;
 }

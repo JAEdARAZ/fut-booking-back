@@ -1,8 +1,10 @@
-import { randomBytes } from "crypto";
+import DynamoEntity from "./DynamoEntity";
+
 export const FIELD_PK = "F#FIELD";
 
-export default class Field {
+export default class Field extends DynamoEntity {
   constructor({ fieldId, location, locationGM, photoURL }) {
+    super();
     const id = fieldId || this.generateId();
     if (!fieldId) {
       this.PK = FIELD_PK;
@@ -22,13 +24,5 @@ export default class Field {
       locationGM: item.locationGM,
       photoURL: item.photoURL
     })
-  }
-
-  generateId() {
-    return randomBytes(16).toString('hex');
-  }
-
-  toItem() {
-    return { ...this };
   }
 }

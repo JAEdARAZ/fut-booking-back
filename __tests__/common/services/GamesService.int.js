@@ -9,7 +9,7 @@ describe("Games service", () => {
 
   it("Get week games with date limit", async () => {
     const service = new GamesService();
-    const getResults = await service.getWeekGamesWithDayLimit("25/2023", "2023-06-21T00:00:00");
+    const getResults = await service.getWeekGamesWithDayLimit("25/2023", "2023-06-21T23:59:59");
     expect(Array.isArray(getResults)).toBeTruthy();
   })
 })

@@ -1,4 +1,4 @@
-import DynamoEntity from "./DynamoEntity";
+import DynamoEntity from "./DynamoEntity.js";
 
 export const FIELD_PK = "F#FIELD";
 

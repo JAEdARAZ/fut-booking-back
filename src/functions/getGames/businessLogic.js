@@ -1,16 +1,17 @@
 
 export const getCurrentWeekNumber = () => {
-  const currentDate = new Date();
-  console.log(currentDate);
+  //remove timezone
+  // Set to nearest Thursday: current date + 4 - current day number
+  // Make Sunday's day number 7
+  let currentDate = new Date();
   const currentYear = currentDate.getFullYear();
-  const startDate = new Date(currentYear, 0, 1);
-  console.log(startDate);
-  const numberOfDays = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
-  console.log(numberOfDays);
-  const currentWeek = Math.ceil((startDate.getDay() + 1 + numberOfDays) / 7);
-  console.log(currentWeek);
+  currentDate = new Date(Date.UTC(currentYear, currentDate.getMonth(), currentDate.getDate()));
+  currentDate.setUTCDate(currentDate.getUTCDate() + 4 - (currentDate.getUTCDay() || 7));
 
-  return `${currentWeek}/${currentYear}`;
+  const yearStart = new Date(Date.UTC(currentYear, 0, 1));
+  const weekNumber = Math.ceil((((currentDate - yearStart) / 86400000) + 1) / 7);
+
+  return `${weekNumber}/${currentYear}`;
 }
 
 export const getStartOfCurrentDateString = () => {

@@ -29,6 +29,5 @@ describe("createGame lambda", () => {
     }
 
     expect(actual.statusCode).toBe(ErrorTypes.BAD_REQUEST.statusCode);
-    expect(actual.message).toBe(ErrorTypes.BAD_REQUEST.message);
   })
 })

@@ -5,7 +5,11 @@ const joiMiddleware = (schema) => {
     const { event } = request;
     const { error } = schema.validate(event.body);
     if (error) {
-      throw new AppError(ErrorTypes.BAD_REQUEST);
+      const context = error.details[0].context;
+      throw new AppError({
+        statusCode: ErrorTypes.BAD_REQUEST.statusCode,
+        message: `Invalid parameter '${context.key}': ${context.value}`
+      });
     }
   }
 

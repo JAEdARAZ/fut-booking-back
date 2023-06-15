@@ -48,6 +48,24 @@ functions:
             - dynamodb:Query
           Resource:
             - !Sub '${FutBookingTable.Arn}/index/*'
+  createGame:
+    handler: src/functions/createGame/index.handler
+    events:
+      - httpApi:
+          method: POST
+          path: /games
+    package:
+      patterns:
+        - src/common/**
+        - package.json
+        - node_modules/**
+        - src/functions/createGame/**
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:PutItem
+          Resource:
+            - !GetAtt FutBookingTable.Arn
   getFields:
     handler: src/functions/getFields/index.handler
     events:

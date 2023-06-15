@@ -6,7 +6,6 @@ describe("Game entity", () => {
     const params = {
       gameWeek: "24/2023",
       gameDateTime: "2023-06-14T15:30:00",
-      playersTotal: "0",
       field: {
         id: "F1",
         location: "Test Location",
@@ -16,13 +15,13 @@ describe("Game entity", () => {
     }
 
     const actual = new Game(params);
-    expect(actual.PK).toBeTruthy();;
+    expect(actual.PK).toBeTruthy();
     expect(actual.SK).toBeTruthy();
     expect(actual.id).toBeTruthy();
     expect(actual.field).toBeInstanceOf(Field);
     expect(actual.gameWeek).toBe(params.gameWeek);
     expect(actual.gameDateTime).toBe(params.gameDateTime);
-    expect(actual.playersTotal).toBe(params.playersTotal);
+    expect(actual.playersTotal).toBe(0);
   })
 
   it("Create Game with id", () => {
@@ -30,7 +29,7 @@ describe("Game entity", () => {
       id: "11223344",
       gameWeek: "24/2023",
       gameDateTime: "2023-06-14T15:30:00",
-      playersTotal: "0",
+      playersTotal: 0,
       field: {
         id: "F1",
         location: "Test Location",

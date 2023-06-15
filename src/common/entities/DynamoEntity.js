@@ -1,13 +1,13 @@
 import { randomBytes } from "crypto";
 
 export default class DynamoEntity {
-  constructor() {}
+  constructor() { }
 
   generateId() {
     return randomBytes(16).toString('hex');
   }
 
   toItem() {
-    return { ...this };
+    return JSON.parse(JSON.stringify(this));
   }
 }

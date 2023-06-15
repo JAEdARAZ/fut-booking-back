@@ -1,10 +1,18 @@
 import DynamoAdapter, { INDEXES } from "../adapter/DynamoAdapter.js";
+import FieldsService from "../services/FieldsService.js";
 import Game from "../../common/entities/Game.js";
 
 export default class GamesService {
   constructor() {
     this.dynamoAdapter = new DynamoAdapter();
+    this.fieldsService = new FieldsService();
     this.tableName = process.env.futBookingTableName;
+  }
+
+  async create(gameWeek, gameDateTime, fieldId) {
+    const field = await this.fieldsService.getField(fieldId);
+    const game = new Game({ gameWeek, gameDateTime, field });
+    await this.dynamoAdapter.createItem(this.tableName, game.toItem());
   }
 
   async getWeekGames(weekNumber, currentDate) {

@@ -2,7 +2,7 @@ import DynamoEntity from "./DynamoEntity.js";
 import Field from "./Field.js";
 
 export default class Game extends DynamoEntity {
-  constructor({ id, field, gameWeek, gameDateTime, playersTotal }) {
+  constructor({ id, field, gameWeek, gameDateTime }) {
     super();
     const gameId = id || this.generateId();
     if (!id) {
@@ -14,7 +14,7 @@ export default class Game extends DynamoEntity {
     this.field = new Field(field);
     this.gameWeek = gameWeek;
     this.gameDateTime = gameDateTime;
-    this.playersTotal = playersTotal;
+    this.playersTotal = 0;
   }
 
   static fromItem(item) {

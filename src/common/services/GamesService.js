@@ -13,6 +13,9 @@ export default class GamesService {
     const field = await this.fieldsService.getField(fieldId);
     const game = new Game({ gameWeek, gameDateTime, field });
     await this.dynamoAdapter.createItem(this.tableName, game.toItem());
+    
+    game.removePKSK();
+    return game.toItem();
   }
 
   async getWeekGames(weekNumber, currentDate) {

@@ -17,6 +17,11 @@ export default class Game extends DynamoEntity {
     this.playersTotal = 0;
   }
 
+  removePKSK() {
+    delete this.PK;
+    delete this.SK;
+  }
+
   static fromItem(item) {
     return new Game({
       id: item.id,

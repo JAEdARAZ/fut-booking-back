@@ -9,7 +9,14 @@ const lambdaHandler = async (event) => {
   const gamesService = new GamesService();
   const gameWeekNumber = getWeekNumber(new Date(game.gameDate));
   const gameDateTime = getGameDateTime(game.gameDate, game.gameTime);
-  return await gamesService.create(gameWeekNumber, gameDateTime, game.fieldId);
+  const gameCreated = await gamesService.create(gameWeekNumber, gameDateTime, game.fieldId);
+  return {
+    headers: {
+      "Content-Type": "application/json"
+    },
+    statusCode: 201,
+    body: JSON.stringify(gameCreated)
+  }
 }
 
 export const handler = middify(lambdaHandler, schema);

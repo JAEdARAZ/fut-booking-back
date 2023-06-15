@@ -63,6 +63,7 @@ functions:
     iamRoleStatements:
         - Effect: "Allow"
           Action:
+            - dynamodb:GetItem
             - dynamodb:PutItem
           Resource:
             - !GetAtt FutBookingTable.Arn

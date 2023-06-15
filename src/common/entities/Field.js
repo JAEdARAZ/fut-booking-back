@@ -3,15 +3,15 @@ import DynamoEntity from "./DynamoEntity.js";
 export const FIELD_PK = "F#FIELD";
 
 export default class Field extends DynamoEntity {
-  constructor({ fieldId, location, locationGM, photoURL }) {
+  constructor({ id, location, locationGM, photoURL }) {
     super();
-    const id = fieldId || this.generateId();
-    if (!fieldId) {
+    const fieldId = id || this.generateId();
+    if (!id) {
       this.PK = FIELD_PK;
-      this.SK = `F#${id}`;
+      this.SK = `F#${fieldId}`;
     }
 
-    this.fieldId = id;
+    this.id = fieldId;
     this.location = location;
     this.locationGM = locationGM;
     this.photoURL = photoURL;
@@ -19,7 +19,7 @@ export default class Field extends DynamoEntity {
 
   static fromItem(item) {
     return new Field({
-      fieldId: item.fieldId,
+      id: item.id,
       location: item.location,
       locationGM: item.locationGM,
       photoURL: item.photoURL

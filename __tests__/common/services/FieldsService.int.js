@@ -10,13 +10,13 @@ describe("Fields service", () => {
 
     const service = new FieldsService();
     const createResult = await service.create(field);
-    const getResult = await service.getField(createResult.fieldId);
+    const getResult = await service.getField(createResult.id);
 
-    expect(getResult.fieldId).toBe(createResult.fieldId);
+    expect(getResult.id).toBe(createResult.id);
     expect(getResult.location).toBe(createResult.location);
     expect(getResult.locationGM).toBe(createResult.locationGM);
     expect(getResult.photoURL).toBe(createResult.photoURL);
-    await expect(service.deleteField(createResult.fieldId)).resolves.not.toThrow();
+    await expect(service.deleteField(createResult.id)).resolves.not.toThrow();
   })
 
   it("Get fields", async () => {

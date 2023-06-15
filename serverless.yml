@@ -67,6 +67,11 @@ functions:
             - dynamodb:PutItem
           Resource:
             - !GetAtt FutBookingTable.Arn
+        - Effect: "Allow"
+          Action:
+            - dynamodb:Query
+          Resource:
+            - !Sub '${FutBookingTable.Arn}/index/*'
   getFields:
     handler: src/functions/getFields/index.handler
     events:

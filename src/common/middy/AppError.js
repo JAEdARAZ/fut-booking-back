@@ -12,5 +12,6 @@ export default class AppError extends Error {
 }
 
 export const ErrorTypes = Object.freeze({
-  BAD_REQUEST: { message: "Bad request", statusCode: 400 }
+  BAD_REQUEST: { message: "Bad request", statusCode: 400 },
+  GAME_ALREADY_EXISTS: { message: "A game for that field and date already exists", statusCode: 400 }
 })

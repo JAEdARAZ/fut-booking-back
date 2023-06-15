@@ -14,6 +14,27 @@ describe("createGame lambda", () => {
     expect(actual.status).toBe(201);
   })
 
+  it("Create new game invalid, already exists", async () => {
+    const payload = {
+      gameDate: "2023-06-16",
+      gameTime: "18:00",
+      fieldId: "F1"
+    }
+
+    const createResult = await axios.post("/games", payload);
+
+    let duplicateCreateResult;
+    try {
+      await axios.post("/games", payload);
+    } catch (error) {
+      duplicateCreateResult = error.response.data;
+    }
+
+    expect(createResult.status).toBe(201);
+    expect(duplicateCreateResult.statusCode).toBe(ErrorTypes.GAME_ALREADY_EXISTS.statusCode);
+    expect(duplicateCreateResult.message).toBe(ErrorTypes.GAME_ALREADY_EXISTS.message);
+  })
+
   it("Invalid input", async () => {
     const payload = {
       gameDate: "2023-40-16", //wrong month

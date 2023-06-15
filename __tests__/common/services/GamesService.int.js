@@ -18,4 +18,14 @@ describe("Games service", () => {
     const createResult = await service.create("24/2023", "2023-06-15T17:00:00", "F1");
     expect(createResult).toBeTruthy();
   })
+
+  it("Get games for day and field", async () => {
+    const service = new GamesService();
+    const createResult = await service.create("24/2023", "2023-06-15T09:00:00", "F1");
+    const getResults = await service.getGamesForDayAndField("24/2023", "2023-06-15T09:00:00", "F1");
+
+    expect(createResult).toBeTruthy();
+    expect(Array.isArray(getResults)).toBeTruthy();
+    expect(getResults.length).toBe(1);
+  })
 })

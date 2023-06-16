@@ -16,7 +16,9 @@ describe("Games service", () => {
   it("Create game", async () => {
     const service = new GamesService();
     const createResult = await service.create("24/2023", "2023-06-15T17:00:00", "F1");
+
     expect(createResult).toBeTruthy();
+    await expect(service.deleteGame(createResult.id)).resolves.not.toThrow();
   })
 
   it("Get games for day and field", async () => {
@@ -27,5 +29,6 @@ describe("Games service", () => {
     expect(createResult).toBeTruthy();
     expect(Array.isArray(getResults)).toBeTruthy();
     expect(getResults.length).toBe(1);
+    await expect(service.deleteGame(createResult.id)).resolves.not.toThrow();
   })
 })

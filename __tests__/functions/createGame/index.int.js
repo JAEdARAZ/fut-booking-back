@@ -10,8 +10,11 @@ describe("createGame lambda", () => {
       fieldId: "F1"
     }
 
-    const actual = await axios.post("/games", payload);
-    expect(actual.status).toBe(201);
+    const createResult = await axios.post("/games", payload);
+    const deleteResult = await axios.delete(`/games/${createResult.data.id}`, payload);
+
+    expect(createResult.status).toBe(201);
+    expect(deleteResult.status).toBe(204);
   })
 
   it("Create new game invalid, already exists", async () => {
@@ -30,9 +33,12 @@ describe("createGame lambda", () => {
       duplicateCreateResult = error.response.data;
     }
 
+    const deleteResult = await axios.delete(`/games/${createResult.data.id}`, payload);
+
     expect(createResult.status).toBe(201);
     expect(duplicateCreateResult.statusCode).toBe(ErrorTypes.GAME_ALREADY_EXISTS.statusCode);
     expect(duplicateCreateResult.message).toBe(ErrorTypes.GAME_ALREADY_EXISTS.message);
+    expect(deleteResult.status).toBe(204);
   })
 
   it("Invalid input", async () => {

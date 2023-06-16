@@ -4,9 +4,12 @@ const validTime = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
 
 const schema =
   Joi.object({
-    gameDate: Joi.string().regex(validDate).required(),
-    gameTime: Joi.string().regex(validTime).required(),
-    fieldId: Joi.string().required()
+    body: Joi.object({
+      gameDate: Joi.string().regex(validDate).required(),
+      gameTime: Joi.string().regex(validTime).required(),
+      fieldId: Joi.string().required()
+    }),
+    pathParameters: Joi.object({})
   })
 
 export default schema;

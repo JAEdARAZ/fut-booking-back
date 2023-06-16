@@ -3,7 +3,10 @@ import AppError, { ErrorTypes } from "./AppError.js";
 const joiMiddleware = (schema) => {
   const customMiddlewareBefore = async (request) => {
     const { event } = request;
-    const { error } = schema.validate(event.body);
+    const { error } = schema.validate({
+      body: event.body,
+      pathParameters: event.pathParameters
+    });
     if (error) {
       const context = error.details[0].context;
       throw new AppError({

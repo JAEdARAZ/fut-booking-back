@@ -72,6 +72,24 @@ functions:
             - dynamodb:Query
           Resource:
             - !Sub '${FutBookingTable.Arn}/index/*'
+  deleteGame:
+    handler: src/functions/deleteGame/index.handler
+    events:
+      - httpApi:
+          method: DELETE
+          path: /games/{gameId}
+    package:
+      patterns:
+        - src/common/**
+        - package.json
+        - node_modules/**
+        - src/functions/deleteGame/**
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:DeleteItem
+          Resource:
+            - !GetAtt FutBookingTable.Arn
   getFields:
     handler: src/functions/getFields/index.handler
     events:

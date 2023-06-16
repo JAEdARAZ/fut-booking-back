@@ -18,6 +18,10 @@ export default class GamesService {
     return game.toItem();
   }
 
+  async deleteGame(gameId) {
+    await this.dynamoAdapter.deleteItem(this.tableName, `G#${gameId}`, `G#${gameId}`);
+  }
+
   async getWeekGames(weekNumber, currentDate) {
     const response = await this.dynamoAdapter.queryIndexByKey(this.tableName, INDEXES.gameWeekGameDateTime, weekNumber, currentDate, ">=");
     const items = response.Items;

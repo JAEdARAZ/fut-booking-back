@@ -90,6 +90,25 @@ functions:
             - dynamodb:DeleteItem
           Resource:
             - !GetAtt FutBookingTable.Arn
+  addPlayer:
+    handler: src/functions/addPlayer/index.handler
+    events:
+      - httpApi:
+          method: POST
+          path: /games/{gameId}/players
+    package:
+      patterns:
+        - src/common/**
+        - package.json
+        - node_modules/**
+        - src/functions/addPlayer/**
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+          Resource:
+            - !GetAtt FutBookingTable.Arn
   getFields:
     handler: src/functions/getFields/index.handler
     events:

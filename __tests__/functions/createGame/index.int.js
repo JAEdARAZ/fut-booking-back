@@ -19,7 +19,7 @@ describe("createGame lambda", () => {
 
   it("Create new game invalid, already exists", async () => {
     const payload = {
-      gameDate: "2023-06-16",
+      gameDate: "2023-06-28",
       gameTime: "18:00",
       fieldId: "F1"
     }

@@ -1,6 +1,9 @@
 import DynamoAdapter, { INDEXES } from "../adapter/DynamoAdapter.js";
 import FieldsService from "../services/FieldsService.js";
 import Game from "../../common/entities/Game.js";
+import AppError, { ErrorTypes } from "../middy/AppError.js";
+import Player from "../entities/Player.js";
+import GamePlayer from "../entities/GamePlayer.js";
 
 export default class GamesService {
   constructor() {
@@ -16,6 +19,15 @@ export default class GamesService {
 
     game.removePKSK();
     return game.toItem();
+  }
+
+  async getGame(gameId) {
+    const response = await this.dynamoAdapter.getByKey(this.tableName, `G#${gameId}`, `G#${gameId}`);
+    if (response.Item) {
+      return Game.fromItem(response.Item);
+    } else {
+      throw new AppError(ErrorTypes.GAME_NOT_FOUND);
+    }
   }
 
   async deleteGame(gameId) {
@@ -38,5 +50,28 @@ export default class GamesService {
     const response = await this.dynamoAdapter.queryIndexByKey(this.tableName, INDEXES.gameWeekGameDateTime, weekNumber, gameDateTime, "=");
     const items = response.Items;
     return items.map(item => Game.fromItem(item)).filter(game => game.field.id == fieldId);
+  }
+
+  async getPlayer(playerId) {
+    const response = await this.dynamoAdapter.getByKey(this.tableName, `P#${playerId}`, `P#${playerId}`);
+    if (response.Item) {
+      return Player.fromItem(response.Item);
+    } else {
+      throw new AppError(ErrorTypes.PLAYER_NOT_FOUND);
+    }
+  }
+
+  async addPlayerToGame(gameId, playerId) {
+    const game = await this.getGame(gameId);
+    const player = await this.getPlayer(playerId);
+
+    const playerToAdd = new GamePlayer({
+      PK: game.id,
+      SK: player.id,
+      gameDateTime: game.gameDateTime
+    })
+
+    await this.dynamoAdapter.createItem(this.tableName, playerToAdd.toItem());
+    return playerToAdd;
   }
 }

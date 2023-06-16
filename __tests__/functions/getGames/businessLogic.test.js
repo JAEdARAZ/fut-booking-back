@@ -1,5 +1,5 @@
 import { jest } from "@jest/globals";
-import { getStartOfDateString, getWeekNumber, isMonday, addDaysToDate, getEndOfDateString } from "../../../src/functions/getGames/businessLogic.js";
+import { addDaysToDate, getEndOfDateString, getStartOfDateString, isMonday } from "../../../src/functions/getGames/businessLogic.js";
 
 describe("Get games buiness logic", () => {
   //week 23 in 2023 [05/06/2023 - 11/06/2023]
@@ -48,17 +48,5 @@ describe("Get games buiness logic", () => {
     jest.useFakeTimers().setSystemTime(sundayDate);
     const actual = isMonday();
     expect(actual).toBe(false);
-  });
-
-  it("Gets correct week number for monday", () => {
-    const weekNumber20230605 = "23/2023";
-    const responseDate = getWeekNumber(mondayDate);
-    expect(responseDate).toBe(weekNumber20230605);
-  });
-
-  it("Gets correct week number for sunday", () => {
-    const weekNumber20230611 = "23/2023";
-    const responseDate = getWeekNumber(sundayDate);
-    expect(responseDate).toBe(weekNumber20230611);
   });
 })

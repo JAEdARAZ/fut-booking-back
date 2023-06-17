@@ -8,11 +8,7 @@ export default class GamePlayer extends DynamoEntity {
     this.gameDateTime = gameDateTime;
   }
 
-  static fromItem(item) {
-    return new GamePlayer(item);
-  }
-
-  getFrontResponsePlayer() {
+  getSimplifiedObject() {
     return {
       gameId: this.PK.substring("G#".length),
       playerId: this.SK.substring("P#".length),

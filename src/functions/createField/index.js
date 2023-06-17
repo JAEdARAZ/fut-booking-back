@@ -5,7 +5,8 @@ import schema from "./schema.js";
 const lambdaHandler = async (event) => {
   const field = event.body;
   const fieldsService = new FieldsService();
-  return fieldsService.create(field);
+  const createdField = await fieldsService.create(field);
+  return createdField.getSimplifiedObject();
 }
 
 export const handler = middify(lambdaHandler, schema);

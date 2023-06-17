@@ -20,7 +20,7 @@ const lambdaHandler = async (event) => {
       "Content-Type": "application/json"
     },
     statusCode: 201,
-    body: JSON.stringify(gameCreated)
+    body: JSON.stringify(gameCreated.getSimplifiedObject())
   }
 }
 

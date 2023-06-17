@@ -15,16 +15,15 @@ export default class GamesService {
   async create(gameWeek, gameDateTime, fieldId) {
     const field = await this.fieldsService.getField(fieldId);
     const game = new Game({ gameWeek, gameDateTime, field });
-    await this.dynamoAdapter.createItem(this.tableName, game.toItem());
 
-    game.removePKSK();
-    return game.toItem();
+    await this.dynamoAdapter.createItem(this.tableName, game.toItem());
+    return game;
   }
 
   async getGame(gameId) {
     const response = await this.dynamoAdapter.getByKey(this.tableName, `G#${gameId}`, `G#${gameId}`);
     if (response.Item) {
-      return Game.fromItem(response.Item);
+      return new Game(response.Item);
     } else {
       throw new AppError(ErrorTypes.GAME_NOT_FOUND);
     }
@@ -37,25 +36,25 @@ export default class GamesService {
   async getWeekGames(weekNumber, currentDate) {
     const response = await this.dynamoAdapter.queryIndexByKey(this.tableName, INDEXES.gameWeekGameDateTime, weekNumber, currentDate, ">=");
     const items = response.Items;
-    return items.map(item => Game.fromItem(item));
+    return items.map(item => new Game(item));
   }
 
   async getWeekGamesWithDayLimit(weekNumber, limitDate) {
     const response = await this.dynamoAdapter.queryIndexByKey(this.tableName, INDEXES.gameWeekGameDateTime, weekNumber, limitDate, "<=");
     const items = response.Items;
-    return items.map(item => Game.fromItem(item));
+    return items.map(item => new Game(item));
   }
 
   async getGamesForDayAndField(weekNumber, gameDateTime, fieldId) {
     const response = await this.dynamoAdapter.queryIndexByKey(this.tableName, INDEXES.gameWeekGameDateTime, weekNumber, gameDateTime, "=");
     const items = response.Items;
-    return items.map(item => Game.fromItem(item)).filter(game => game.field.id == fieldId);
+    return items.map(item => new Game(item)).filter(game => game.field.id == fieldId);
   }
 
   async getPlayer(playerId) {
     const response = await this.dynamoAdapter.getByKey(this.tableName, `P#${playerId}`, `P#${playerId}`);
     if (response.Item) {
-      return Player.fromItem(response.Item);
+      return new Player(response.Item);
     } else {
       throw new AppError(ErrorTypes.PLAYER_NOT_FOUND);
     }

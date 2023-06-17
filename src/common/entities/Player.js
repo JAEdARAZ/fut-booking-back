@@ -7,8 +7,4 @@ export default class Player extends DynamoEntity {
     this.SK = SK || `P#${id}`;
     this.id = id;
   }
-
-  static fromItem(item) {
-    return new Player(item);
-  }
 }

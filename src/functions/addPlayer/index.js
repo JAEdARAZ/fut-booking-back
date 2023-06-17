@@ -13,7 +13,7 @@ const lambdaHandler = async (event) => {
       "Content-Type": "application/json"
     },
     statusCode: 201,
-    body: JSON.stringify(playerAdded.getFrontResponsePlayer())
+    body: JSON.stringify(playerAdded.getSimplifiedObject())
   }
 }
 

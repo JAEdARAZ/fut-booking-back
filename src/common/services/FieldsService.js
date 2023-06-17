@@ -16,13 +16,13 @@ export default class FieldsService {
   async getField(fieldId) {
     const response = await this.dynamoAdapter.getByKey(this.tableName, FIELD_PK, `F#${fieldId}`);
     const item = response.Item;
-    return item ? Field.fromItem(item) : item;
+    return item ? new Field(item) : item;
   }
 
   async getFields() {
     const response = await this.dynamoAdapter.queryByKey(this.tableName, FIELD_PK);
     const items = response.Items;
-    return items.map(item => Field.fromItem(item));
+    return items.map(item => new Field(item));
   }
 
   async deleteField(fieldId) {

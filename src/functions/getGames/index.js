@@ -17,7 +17,12 @@ const lambdaHandler = async () => {
     games = [...games, ...nextWeekGames];
   }
 
-  return games;
+  const gamesSimplified = [];
+  games.forEach(game => {
+    gamesSimplified.push(game.getSimplifiedObject());
+  })
+
+  return gamesSimplified;
 }
 
 export const handler = middify(lambdaHandler);

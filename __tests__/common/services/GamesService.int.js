@@ -33,12 +33,13 @@ describe("Games service", () => {
     await expect(service.deleteGame(createResult.id)).resolves.not.toThrow();
   })
 
-  it("Add player to game", async () => {
+  it("Add player to game and delete it", async () => {
     const service = new GamesService();
     const addPlayerResult = await service.addPlayerToGame("123", "XYZ");
 
     expect(addPlayerResult.PK).toBe("G#123");
     expect(addPlayerResult.SK).toBe("P#XYZ");
+    await expect(service.deletePlayerFromGame("123", "XYZ")).resolves.not.toThrow();
   })
 
   it("Add player to game fails for non existing game", async () => {

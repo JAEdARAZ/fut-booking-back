@@ -1,8 +1,12 @@
 import axios from "axios";
+import DynamoAdapter from "../../../src/common/adapter/DynamoAdapter.js";
+import { FIELD_PK } from "../../../src/common/entities/Field.js";
 import { ErrorTypes } from "../../../src/common/middy/AppError.js";
 axios.defaults.baseURL = `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`;
 
 describe("createField lambda", () => {
+  let createdFieldId;
+
   it("Create new field, responds 200 OK", async () => {
     const payload = {
       location: "Test Location Integration Test",
@@ -11,6 +15,12 @@ describe("createField lambda", () => {
     }
 
     const actual = await axios.post("/fields", payload);
+    createdFieldId = actual.data.id;
+
+    expect(actual.data.id).toMatch(new RegExp(/^[a-z0-9]{32}$/));
+    expect(actual.data.location).toBe(payload.location);
+    expect(actual.data.locationGM).toBe(payload.locationGM);
+    expect(actual.data.photoURL).toBe(payload.photoURL);
     expect(actual.status).toBe(200);
   })
 
@@ -30,5 +40,10 @@ describe("createField lambda", () => {
     }
 
     expect(actual.statusCode).toBe(ErrorTypes.BAD_REQUEST.statusCode);
+  })
+
+  afterAll(async () => {
+    const db = new DynamoAdapter();
+    await db.deleteItem(process.env.futBookingTableName, FIELD_PK, `F#${createdFieldId}`);
   })
 })

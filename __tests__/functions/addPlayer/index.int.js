@@ -1,9 +1,11 @@
 import axios from "axios";
 import { ErrorTypes } from "../../../src/common/middy/AppError";
+import DynamoAdapter from "../../../src/common/adapter/DynamoAdapter";
 axios.defaults.baseURL = `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`;
 
 describe("addPlayer lambda", () => {
   let createdGameId;
+  let addedPlayerId;
 
   beforeAll(async () => {
     const payload = {
@@ -22,6 +24,9 @@ describe("addPlayer lambda", () => {
     }
 
     const actual = await axios.post(`/games/${createdGameId}/players`, payload);
+    createdGameId = actual.data.gameId;
+    addedPlayerId = actual.data.playerId;
+
     expect(actual.data.gameId).toBe(createdGameId);
     expect(actual.data.playerId).toBe(payload.playerId);
     expect(actual.status).toBe(201);
@@ -45,5 +50,7 @@ describe("addPlayer lambda", () => {
 
   afterAll(async () => {
     await axios.delete(`/games/${createdGameId}`);
+    const db = new DynamoAdapter();
+    await db.deleteItem(process.env.futBookingTableName, `G#${createdGameId}`, `P#${addedPlayerId}`);
   })
 })

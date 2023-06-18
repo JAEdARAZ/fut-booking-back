@@ -73,4 +73,8 @@ export default class GamesService {
     await this.dynamoAdapter.createItem(this.tableName, playerToAdd.toItem());
     return playerToAdd;
   }
+
+  async deletePlayerFromGame(gameId, playerId) {
+    await this.dynamoAdapter.deleteItem(this.tableName, `G#${gameId}`, `P#${playerId}`);
+  }
 }

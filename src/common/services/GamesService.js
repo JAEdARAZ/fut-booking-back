@@ -12,10 +12,9 @@ export default class GamesService {
     this.tableName = process.env.futBookingTableName;
   }
 
-  async create(gameWeek, gameDateTime, fieldId) {
+  async create(gameWeek, gameDateTime, playersTotal, fieldId) {
     const field = await this.fieldsService.getField(fieldId);
-    const game = new Game({ gameWeek, gameDateTime, field });
-
+    const game = new Game({ gameWeek, gameDateTime, playersTotal, field });
     await this.dynamoAdapter.createItem(this.tableName, game.toItem());
     return game;
   }
@@ -24,6 +23,27 @@ export default class GamesService {
     const response = await this.dynamoAdapter.getByKey(this.tableName, GAME_ID + gameId, GAME_ID + gameId);
     if (response.Item) {
       return new Game(response.Item);
+    } else {
+      throw new AppError(ErrorTypes.GAME_NOT_FOUND);
+    }
+  }
+
+  async getGameWithPlayers(gameId) {
+    const response = await this.dynamoAdapter.queryByKey(this.tableName, GAME_ID + gameId);
+    const items = response.Items;
+
+    let game, players = [];
+    items.forEach(i => {
+      if (i.SK.startsWith(GAME_ID)) {
+        game = new Game(i);
+      } else {
+        players.push(new Player({ id: i.SK.substring(PLAYER_ID.length) }));
+      }
+    })
+
+    if (game) {
+      game.setPlayers(players);
+      return game;
     } else {
       throw new AppError(ErrorTypes.GAME_NOT_FOUND);
     }

@@ -9,4 +9,8 @@ export default class Player extends DynamoEntity {
     this.SK = SK || PLAYER_ID + id;
     this.id = id;
   }
+
+  getSimplifiedObject() {
+    return { id: this.id };
+  }
 }

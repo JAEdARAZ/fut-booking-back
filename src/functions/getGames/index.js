@@ -1,7 +1,7 @@
 import { middify } from "../../common/middy/handlers.js";
 import GamesService from "../../common/services/GamesService.js";
-import { getSimplifiedObjects, getWeekNumber } from "../../common/utils.js";
-import { getStartOfDateString, isMonday, addDaysToDate, getEndOfDateString } from "./businessLogic.js";
+import { getWeekNumber } from "../../common/utils.js";
+import { addDaysToDate, getEndOfDateString, getStartOfDateString, isMonday } from "./businessLogic.js";
 
 const lambdaHandler = async () => {
   const service = new GamesService();
@@ -17,7 +17,7 @@ const lambdaHandler = async () => {
     games = [...games, ...nextWeekGames];
   }
 
-  return getSimplifiedObjects(games);
+  return games.map(game => game.getSimplifiedObject());
 }
 
 export const handler = middify(lambdaHandler);

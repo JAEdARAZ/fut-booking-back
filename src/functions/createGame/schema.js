@@ -7,6 +7,7 @@ const schema =
     body: Joi.object({
       gameDate: Joi.string().regex(validDate).required(),
       gameTime: Joi.string().regex(validTime).required(),
+      playersTotal: Joi.number().required(),
       fieldId: Joi.string().required()
     }),
     pathParameters: Joi.object({})

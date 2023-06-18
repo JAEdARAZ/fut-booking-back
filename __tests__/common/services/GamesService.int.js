@@ -16,7 +16,7 @@ describe("Games service", () => {
 
   it("Create and delete game", async () => {
     const service = new GamesService();
-    const createResult = await service.create("24/2023", "2023-06-15T17:00:00", "F1");
+    const createResult = await service.create("24/2023", "2023-06-15T17:00:00", 16, "F1");
 
     expect(createResult).toBeTruthy();
     await expect(service.deleteGame(createResult.id)).resolves.not.toThrow();
@@ -24,7 +24,7 @@ describe("Games service", () => {
 
   it("Get games for day and field", async () => {
     const service = new GamesService();
-    const createResult = await service.create("24/2023", "2023-06-15T09:00:00", "F1");
+    const createResult = await service.create("24/2023", "2023-06-15T09:00:00", 16, "F1");
     const getResults = await service.getGamesForDayAndField("24/2023", "2023-06-15T09:00:00", "F1");
 
     expect(createResult).toBeTruthy();
@@ -66,5 +66,16 @@ describe("Games service", () => {
       expect(errorBody).toHaveProperty("statusCode", ErrorTypes.PLAYER_NOT_FOUND.statusCode);
       expect(errorBody).toHaveProperty("message", ErrorTypes.PLAYER_NOT_FOUND.message);
     }
+  })
+
+  it("Get games with players", async () => {
+    const service = new GamesService();
+    await service.addPlayerToGame("123", "ABC");
+    const queryResult = await service.getGameWithPlayers("123");
+
+    expect(queryResult.id).toBe("123");
+    expect(queryResult.players).toHaveLength(1);
+    expect(queryResult.players[0].id).toBe("ABC");
+    await expect(service.deletePlayerFromGame("123", "ABC")).resolves.not.toThrow();
   })
 })

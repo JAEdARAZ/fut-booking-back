@@ -11,12 +11,3 @@ export const getWeekNumber = (date) => {
 
   return `${weekNumber}/${currentYear}`;
 }
-
-export const getSimplifiedObjects = (entities) => {
-  const simplifiedObjects = [];
-  entities.forEach(e => {
-    simplifiedObjects.push(e.getSimplifiedObject());
-  });
-
-  return simplifiedObjects;
-}

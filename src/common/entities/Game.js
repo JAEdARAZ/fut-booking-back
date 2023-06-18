@@ -12,23 +12,35 @@ export default class Game extends DynamoEntity {
     this.field = new GameField(field);
     this.gameWeek = gameWeek;
     this.gameDateTime = gameDateTime;
-    this.playersTotal = playersTotal || 0;
+    this.playersTotal = playersTotal;
   }
 
+  setPlayers(players) {
+    this.players = players;
+    this.playersJoined = players.length;
+  } 
+
   getSimplifiedObject() {
-    return {
+    const simplifiedGame = {
       id: this.id,
       field: this.field.getSimplifiedObject(),
       gameWeek: this.gameWeek,
       gameDateTime: this.gameDateTime,
       playersTotal: this.playersTotal
+    };
+    
+    if(this.players) {
+      simplifiedGame.players = this.players.map(p => p.getSimplifiedObject());
+      simplifiedGame.playersJoined = this.playersJoined;
     }
+
+    return simplifiedGame;
   }
 }
 
 export class GameField {
   constructor({ id, location, locationGM, photoURL }) {
-    this.id = id || id;
+    this.id = id;
     this.location = location;
     this.locationGM = locationGM;
     this.photoURL = photoURL;

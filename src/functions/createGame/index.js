@@ -14,7 +14,7 @@ const lambdaHandler = async (event) => {
   const gameDateTime = getGameDateTime(game.gameDate, game.gameTime);
 
   await validateGameIsUnique(gameWeekNumber, gameDateTime, game.fieldId);
-  const gameCreated = await gamesService.create(gameWeekNumber, gameDateTime, game.fieldId);
+  const gameCreated = await gamesService.create(gameWeekNumber, gameDateTime, game.playersTotal, game.fieldId);
   return {
     headers: {
       "Content-Type": "application/json"

@@ -3,7 +3,7 @@ import DynamoEntity from "./DynamoEntity.js";
 export const GAME_ID = "G#";
 
 export default class Game extends DynamoEntity {
-  constructor({ PK, SK, id, field, gameWeek, gameDateTime }) {
+  constructor({ PK, SK, id, field, gameWeek, gameDateTime, playersTotal }) {
     super();
     const gameId = this.generateId();
     this.PK = PK || GAME_ID + gameId;
@@ -12,7 +12,7 @@ export default class Game extends DynamoEntity {
     this.field = new GameField(field);
     this.gameWeek = gameWeek;
     this.gameDateTime = gameDateTime;
-    this.playersTotal = 0;
+    this.playersTotal = playersTotal || 0;
   }
 
   getSimplifiedObject() {

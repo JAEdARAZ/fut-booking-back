@@ -1,6 +1,6 @@
 import { middify } from "../../common/middy/handlers.js";
 import GamesService from "../../common/services/GamesService.js";
-import { getWeekNumber } from "../../common/utils.js";
+import { getSimplifiedObjects, getWeekNumber } from "../../common/utils.js";
 import { getStartOfDateString, isMonday, addDaysToDate, getEndOfDateString } from "./businessLogic.js";
 
 const lambdaHandler = async () => {
@@ -17,12 +17,7 @@ const lambdaHandler = async () => {
     games = [...games, ...nextWeekGames];
   }
 
-  const gamesSimplified = [];
-  games.forEach(game => {
-    gamesSimplified.push(game.getSimplifiedObject());
-  })
-
-  return gamesSimplified;
+  return getSimplifiedObjects(games);
 }
 
 export const handler = middify(lambdaHandler);

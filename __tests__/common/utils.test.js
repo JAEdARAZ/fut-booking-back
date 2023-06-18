@@ -1,4 +1,5 @@
-import { getWeekNumber } from "../../src/common/utils.js";
+import Field from "../../src/common/entities/Field.js";
+import { getSimplifiedObjects, getWeekNumber } from "../../src/common/utils.js";
 
 describe("Get games buiness logic", () => {
   //week 23 in 2023 [05/06/2023 - 11/06/2023]
@@ -22,11 +23,31 @@ describe("Get games buiness logic", () => {
     const weekNumber20230605 = "23/2023";
     const responseDate = getWeekNumber(mondayDate);
     expect(responseDate).toBe(weekNumber20230605);
-  });
+  })
 
   it("Gets correct week number for sunday", () => {
     const weekNumber20230611 = "23/2023";
     const responseDate = getWeekNumber(sundayDate);
     expect(responseDate).toBe(weekNumber20230611);
-  });
+  })
+
+  it("Simplify objects", () => {
+    const field1 = new Field({
+      location: "test",
+      locationGM: "test",
+      photoURL: "test"
+    });
+    const field2 = new Field({
+      location: "test",
+      locationGM: "test",
+      photoURL: "test"
+     })
+
+    const fields = [field1, field2];
+    const simplifiedFields = getSimplifiedObjects(fields);
+
+    expect(simplifiedFields).toHaveLength(fields.length);
+    expect(simplifiedFields[0].PK).toBe(undefined);
+    expect(simplifiedFields[0].SK).toBe(undefined);
+  })
 })

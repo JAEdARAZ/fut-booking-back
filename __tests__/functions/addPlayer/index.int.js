@@ -1,6 +1,8 @@
 import axios from "axios";
 import { ErrorTypes } from "../../../src/common/middy/AppError";
 import DynamoAdapter from "../../../src/common/adapter/DynamoAdapter";
+import { GAME_ID } from "../../../src/common/entities/Game";
+import { PLAYER_ID } from "../../../src/common/entities/Player";
 axios.defaults.baseURL = `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`;
 
 describe("addPlayer lambda", () => {
@@ -51,6 +53,6 @@ describe("addPlayer lambda", () => {
   afterAll(async () => {
     await axios.delete(`/games/${createdGameId}`);
     const db = new DynamoAdapter();
-    await db.deleteItem(process.env.futBookingTableName, `G#${createdGameId}`, `P#${addedPlayerId}`);
+    await db.deleteItem(process.env.futBookingTableName, GAME_ID + createdGameId, PLAYER_ID + addedPlayerId);
   })
 })

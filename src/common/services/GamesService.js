@@ -1,9 +1,9 @@
+import Game, { GAME_ID } from "../../common/entities/Game.js";
 import DynamoAdapter, { INDEXES } from "../adapter/DynamoAdapter.js";
-import FieldsService from "../services/FieldsService.js";
-import Game from "../../common/entities/Game.js";
-import AppError, { ErrorTypes } from "../middy/AppError.js";
-import Player from "../entities/Player.js";
 import GamePlayer from "../entities/GamePlayer.js";
+import Player, { PLAYER_ID } from "../entities/Player.js";
+import AppError, { ErrorTypes } from "../middy/AppError.js";
+import FieldsService from "../services/FieldsService.js";
 
 export default class GamesService {
   constructor() {
@@ -21,7 +21,7 @@ export default class GamesService {
   }
 
   async getGame(gameId) {
-    const response = await this.dynamoAdapter.getByKey(this.tableName, `G#${gameId}`, `G#${gameId}`);
+    const response = await this.dynamoAdapter.getByKey(this.tableName, GAME_ID + gameId, GAME_ID + gameId);
     if (response.Item) {
       return new Game(response.Item);
     } else {
@@ -30,7 +30,7 @@ export default class GamesService {
   }
 
   async deleteGame(gameId) {
-    await this.dynamoAdapter.deleteItem(this.tableName, `G#${gameId}`, `G#${gameId}`);
+    await this.dynamoAdapter.deleteItem(this.tableName, GAME_ID + gameId, GAME_ID + gameId);
   }
 
   async getWeekGames(weekNumber, currentDate) {
@@ -52,7 +52,7 @@ export default class GamesService {
   }
 
   async getPlayer(playerId) {
-    const response = await this.dynamoAdapter.getByKey(this.tableName, `P#${playerId}`, `P#${playerId}`);
+    const response = await this.dynamoAdapter.getByKey(this.tableName, PLAYER_ID + playerId, PLAYER_ID + playerId);
     if (response.Item) {
       return new Player(response.Item);
     } else {
@@ -75,6 +75,6 @@ export default class GamesService {
   }
 
   async deletePlayerFromGame(gameId, playerId) {
-    await this.dynamoAdapter.deleteItem(this.tableName, `G#${gameId}`, `P#${playerId}`);
+    await this.dynamoAdapter.deleteItem(this.tableName, GAME_ID + gameId, PLAYER_ID + playerId);
   }
 }

@@ -1,11 +1,13 @@
 import DynamoEntity from "./DynamoEntity.js";
 
+export const GAME_ID = "G#";
+
 export default class Game extends DynamoEntity {
   constructor({ PK, SK, id, field, gameWeek, gameDateTime }) {
     super();
     const gameId = this.generateId();
-    this.PK = PK || `G#${gameId}`;
-    this.SK = SK || `G#${gameId}`;
+    this.PK = PK || GAME_ID + gameId;
+    this.SK = SK || GAME_ID + gameId;
     this.id = id || gameId;
     this.field = new GameField(field);
     this.gameWeek = gameWeek;

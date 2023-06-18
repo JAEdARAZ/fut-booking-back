@@ -1,6 +1,6 @@
 import axios from "axios";
 import DynamoAdapter from "../../../src/common/adapter/DynamoAdapter.js";
-import { FIELD_PK } from "../../../src/common/entities/Field.js";
+import { FIELD_ID, FIELD_PK } from "../../../src/common/entities/Field.js";
 import { ErrorTypes } from "../../../src/common/middy/AppError.js";
 axios.defaults.baseURL = `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`;
 
@@ -44,6 +44,6 @@ describe("createField lambda", () => {
 
   afterAll(async () => {
     const db = new DynamoAdapter();
-    await db.deleteItem(process.env.futBookingTableName, FIELD_PK, `F#${createdFieldId}`);
+    await db.deleteItem(process.env.futBookingTableName, FIELD_PK, FIELD_ID + createdFieldId);
   })
 })

@@ -1,5 +1,5 @@
 import DynamoAdapter from "../adapter/DynamoAdapter.js";
-import Field, { FIELD_PK } from "../entities/Field.js";
+import Field, { FIELD_ID, FIELD_PK } from "../entities/Field.js";
 
 export default class FieldsService {
   constructor() {
@@ -14,7 +14,7 @@ export default class FieldsService {
   }
 
   async getField(fieldId) {
-    const response = await this.dynamoAdapter.getByKey(this.tableName, FIELD_PK, `F#${fieldId}`);
+    const response = await this.dynamoAdapter.getByKey(this.tableName, FIELD_PK, FIELD_ID + fieldId);
     const item = response.Item;
     return item ? new Field(item) : item;
   }
@@ -26,6 +26,6 @@ export default class FieldsService {
   }
 
   async deleteField(fieldId) {
-    await this.dynamoAdapter.deleteItem(this.tableName, FIELD_PK, `F#${fieldId}`);
+    await this.dynamoAdapter.deleteItem(this.tableName, FIELD_PK, FIELD_ID + fieldId);
   }
 }

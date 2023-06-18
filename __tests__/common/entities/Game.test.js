@@ -1,5 +1,4 @@
-import Field from "../../../src/common/entities/Field.js";
-import Game from "../../../src/common/entities/Game.js"
+import Game, { GameField } from "../../../src/common/entities/Game.js";
 
 describe("Game entity", () => {
   it("Create new Game", () => {
@@ -18,7 +17,7 @@ describe("Game entity", () => {
     expect(actual.PK).toBeTruthy();
     expect(actual.SK).toBeTruthy();
     expect(actual.id).toBeTruthy();
-    expect(actual.field).toBeInstanceOf(Field);
+    expect(actual.field).toBeInstanceOf(GameField);
     expect(actual.gameWeek).toBe(params.gameWeek);
     expect(actual.gameDateTime).toBe(params.gameDateTime);
     expect(actual.playersTotal).toBe(0);

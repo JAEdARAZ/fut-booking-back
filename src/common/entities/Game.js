@@ -24,7 +24,7 @@ export default class Game extends DynamoEntity {
   }
 }
 
-class GameField {
+export class GameField {
   constructor({ id, location, locationGM, photoURL }) {
     this.id = id || id;
     this.location = location;

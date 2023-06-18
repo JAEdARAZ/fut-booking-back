@@ -1,5 +1,4 @@
 import DynamoEntity from "./DynamoEntity.js";
-import Field from "./Field.js";
 
 export default class Game extends DynamoEntity {
   constructor({ PK, SK, id, field, gameWeek, gameDateTime }) {
@@ -8,7 +7,7 @@ export default class Game extends DynamoEntity {
     this.PK = PK || `G#${gameId}`;
     this.SK = SK || `G#${gameId}`;
     this.id = id || gameId;
-    this.field = new Field(field);
+    this.field = new GameField(field);
     this.gameWeek = gameWeek;
     this.gameDateTime = gameDateTime;
     this.playersTotal = 0;
@@ -22,5 +21,18 @@ export default class Game extends DynamoEntity {
       gameDateTime: this.gameDateTime,
       playersTotal: this.playersTotal
     }
+  }
+}
+
+class GameField {
+  constructor({ id, location, locationGM, photoURL }) {
+    this.id = id || id;
+    this.location = location;
+    this.locationGM = locationGM;
+    this.photoURL = photoURL;
+  }
+
+  getSimplifiedObject() {
+    return JSON.parse(JSON.stringify(this));
   }
 }

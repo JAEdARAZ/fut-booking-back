@@ -30,6 +30,24 @@ custom:
     overwrite: true
 
 functions:
+  getGame:
+    handler: src/functions/getGame/index.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /games/{gameId}
+    package:
+      patterns:
+        - src/common/**
+        - package.json
+        - node_modules/**
+        - src/functions/getGame/**
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:Query
+          Resource:
+            - !GetAtt FutBookingTable.Arn
   getGames:
     handler: src/functions/getGames/index.handler
     events:

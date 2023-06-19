@@ -7,6 +7,7 @@ describe("createGame lambda", () => {
     const payload = {
       gameDate: "2023-06-16",
       gameTime: "17:00",
+      playersTotal: 14,
       fieldId: "F1"
     }
 
@@ -21,6 +22,7 @@ describe("createGame lambda", () => {
     const payload = {
       gameDate: "2023-06-28",
       gameTime: "18:00",
+      playersTotal: 14,
       fieldId: "F1"
     }
 

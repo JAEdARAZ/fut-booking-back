@@ -13,6 +13,7 @@ describe("addPlayer lambda", () => {
     const payload = {
       gameDate: "2023-06-16",
       gameTime: "18:00",
+      playersTotal: 16,
       fieldId: "F1"
     }
 

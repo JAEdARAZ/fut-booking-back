@@ -87,7 +87,8 @@ export default class GamesService {
     const playerToAdd = new GamePlayer({
       PK: game.id,
       SK: player.id,
-      gameDateTime: game.gameDateTime
+      gameDateTime: game.gameDateTime,
+      field: game.field
     })
 
     await this.dynamoAdapter.createItem(this.tableName, playerToAdd.toItem());
@@ -96,5 +97,11 @@ export default class GamesService {
 
   async deletePlayerFromGame(gameId, playerId) {
     await this.dynamoAdapter.deleteItem(this.tableName, GAME_ID + gameId, PLAYER_ID + playerId);
+  }
+
+  async getPlayerGames(playerId) {
+    const response = await this.dynamoAdapter.queryIndexByKey(this.tableName, INDEXES.SKGameDateTime, PLAYER_ID + playerId, " ", ">");
+    const items = response.Items;
+    return items.map(item => new GamePlayer(item));
   }
 }

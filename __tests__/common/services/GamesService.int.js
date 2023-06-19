@@ -78,4 +78,11 @@ describe("Games service", () => {
     expect(queryResult.players[0].id).toBe("ABC");
     await expect(service.deletePlayerFromGame("123", "ABC")).resolves.not.toThrow();
   })
+
+  it("Get player's games", async () => {
+    const service = new GamesService();
+    const queryResult = await service.getPlayerGames("ABC");
+
+    console.log(queryResult);
+  })
 })

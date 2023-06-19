@@ -6,6 +6,11 @@ export const INDEXES = {
     name: "gameWeek-gameDateTime-index",
     PK: "gameWeek",
     SK: "gameDateTime"
+  },
+  SKGameDateTime: {
+    name: "SK-gameDateTime-index",
+    PK: "SK",
+    SK: "gameDateTime"
   }
 }
 

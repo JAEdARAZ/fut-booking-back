@@ -108,6 +108,24 @@ functions:
             - dynamodb:DeleteItem
           Resource:
             - !GetAtt FutBookingTable.Arn
+  getPlayerGames:
+    handler: src/functions/getPlayerGames/index.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /players/{playerId}/games
+    package:
+      patterns:
+        - src/common/**
+        - package.json
+        - node_modules/**
+        - src/functions/getPlayerGames/**
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:Query
+          Resource:
+            - !Sub '${FutBookingTable.Arn}/index/*'
   addPlayer:
     handler: src/functions/addPlayer/index.handler
     events:

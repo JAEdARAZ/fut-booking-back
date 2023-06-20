@@ -230,3 +230,68 @@ resources:
           WriteCapacityUnits: 1
         StreamSpecification:
           StreamViewType: NEW_IMAGE
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:provider.stage}-fut-booking
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+        Schema:
+          - Name: email
+            AttributeDataType: String
+            Mutable: false
+            Required: true
+          - Name: name
+            AttributeDataType: String
+            Mutable: true
+            Required: true
+          - Name: gender
+            AttributeDataType: String
+            Mutable: false
+            Required: true
+          - Name: birthdate
+            AttributeDataType: String
+            Mutable: false
+            Required: true
+        AccountRecoverySetting:
+          RecoveryMechanisms:
+            - Name: verified_email
+              Priority: 1
+        EmailConfiguration:
+          EmailSendingAccount: DEVELOPER
+          SourceArn: arn:aws:ses:${self:provider.region}:${aws:accountId}:identity/${param:email}
+          From: Fut Booking <${param:email}>
+          ReplyToEmailAddress: ${param:email}
+        VerificationMessageTemplate:
+          DefaultEmailOption: CONFIRM_WITH_LINK
+          EmailSubjectByLink: "[FUT BOOKING] Verification Link"
+          EmailMessageByLink: >
+            Hey!<br><br>
+            Please click the following link to verify your email address: {##Verify Email##}<br>
+            Soon we will be playing some matches ;)<br><br>
+            Best regards,<br>
+            Fut Booking.
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${self:provider.stage}-fut-booking-client
+        UserPoolId:
+          Ref: CognitoUserPool
+        GenerateSecret: false
+        AccessTokenValidity: 1
+        RefreshTokenValidity: 30
+        IdTokenValidity: 1
+        TokenValidityUnits:
+          AccessToken: hours
+          IdToken: hours
+          RefreshToken: days
+        ExplicitAuthFlows:
+          - ALLOW_USER_SRP_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+    UserPoolDomain:
+      Type: AWS::Cognito::UserPoolDomain 
+      Properties:
+        UserPoolId: !Ref CognitoUserPool 
+        Domain: fut-booking

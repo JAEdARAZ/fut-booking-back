@@ -4,7 +4,6 @@ import { PLAYER_ID } from "./Player.js";
 
 export default class GamePlayer extends DynamoEntity {
   constructor({ PK, SK, gameDateTime, field }) {
-
     super();
     this.PK = PK.startsWith(GAME_ID) ? PK : GAME_ID + PK;
     this.SK = SK.startsWith(PLAYER_ID) ? SK : PLAYER_ID + SK;

@@ -25,6 +25,7 @@ package:
 custom:
   deployment: ${file(config/deployment.yml):deployment}
   futBookingTableName: ${self:provider.stage}-fut-booking
+  cognitoEmail: ${param:email, 'test@email.com'}
   export-env:
     filename: .awsenv
     overwrite: true
@@ -261,9 +262,9 @@ resources:
               Priority: 1
         EmailConfiguration:
           EmailSendingAccount: DEVELOPER
-          SourceArn: arn:aws:ses:${self:provider.region}:${aws:accountId}:identity/${param:email}
-          From: Fut Booking <${param:email}>
-          ReplyToEmailAddress: ${param:email}
+          SourceArn: arn:aws:ses:${self:provider.region}:${aws:accountId}:identity/${self:custom.cognitoEmail}
+          From: Fut Booking <${self:custom.cognitoEmail}>
+          ReplyToEmailAddress: ${self:custom.cognitoEmail}
         VerificationMessageTemplate:
           DefaultEmailOption: CONFIRM_WITH_LINK
           EmailSubjectByLink: "[FUT BOOKING] Verification Link"

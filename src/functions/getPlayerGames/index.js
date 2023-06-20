@@ -7,7 +7,7 @@ const lambdaHandler = async (event) => {
   const gamesService = new GamesService();
   const playerGames = await gamesService.getPlayerGames(playerId);
 
-  return playerGames.map(pg => pg.getSimplifiedObject());
+  return playerGames.map(playerGame => playerGame.getSimplifiedObject());
 }
 
 export const handler = middify(lambdaHandler, schema);

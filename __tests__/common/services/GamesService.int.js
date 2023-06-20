@@ -81,8 +81,16 @@ describe("Games service", () => {
 
   it("Get player's games", async () => {
     const service = new GamesService();
-    const queryResult = await service.getPlayerGames("ABC");
+    const createResult = await service.create("24/2023", "2023-06-15T22:00:00", 16, "F1");
+    const createdGameId = createResult.id;
+    await service.addPlayerToGame(createdGameId, "XYZ");
 
-    console.log(queryResult);
+    const queryResult = await service.getPlayerGames("XYZ");
+    expect(queryResult.length).toBeGreaterThan(0);
+    expect(queryResult[0].getSimplifiedObject().gameId).toBe(createdGameId);
+    expect(queryResult[0].getSimplifiedObject().playerId).toBe("XYZ");
+
+    await expect(service.deletePlayerFromGame(createdGameId, "XYZ")).resolves.not.toThrow();
+    await expect(service.deleteGame(createdGameId)).resolves.not.toThrow();
   })
 })

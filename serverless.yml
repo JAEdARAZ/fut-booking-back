@@ -25,7 +25,7 @@ package:
 custom:
   deployment: ${file(config/deployment.yml):deployment}
   futBookingTableName: ${self:provider.stage}-fut-booking
-  cognitoEmail: ${param:email, 'test@email.com'}
+  cognitoEmail: ${param:email, ""}
   export-env:
     filename: .awsenv
     overwrite: true

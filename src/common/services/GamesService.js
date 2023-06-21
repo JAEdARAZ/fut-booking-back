@@ -1,7 +1,7 @@
 import Game, { GAME_ID } from "../../common/entities/Game.js";
 import DynamoAdapter, { INDEXES } from "../adapter/DynamoAdapter.js";
 import GamePlayer from "../entities/GamePlayer.js";
-import Player, { PLAYER_ID } from "../entities/Player.js";
+import Player, { PLAYER_ID, PlayerNested } from "../entities/Player.js";
 import AppError, { ErrorTypes } from "../middy/AppError.js";
 import FieldsService from "../services/FieldsService.js";
 
@@ -37,7 +37,7 @@ export default class GamesService {
       if (i.SK.startsWith(GAME_ID)) {
         game = new Game(i);
       } else {
-        players.push(new Player({ id: i.SK.substring(PLAYER_ID.length) }));
+        players.push(new PlayerNested(i.player));
       }
     })
 
@@ -71,6 +71,12 @@ export default class GamesService {
     return items.map(item => new Game(item)).filter(game => game.field.id == fieldId);
   }
 
+  async createPlayer(id, email, name, gender, birthdate) {
+    const player = new Player({ id, email, name, gender, birthdate });
+    await this.dynamoAdapter.createItem(this.tableName, player.toItem());
+    return player;
+  }
+
   async getPlayer(playerId) {
     const response = await this.dynamoAdapter.getByKey(this.tableName, PLAYER_ID + playerId, PLAYER_ID + playerId);
     if (response.Item) {
@@ -88,7 +94,8 @@ export default class GamesService {
       PK: game.id,
       SK: player.id,
       gameDateTime: game.gameDateTime,
-      field: game.field
+      field: game.field,
+      player
     })
 
     await this.dynamoAdapter.createItem(this.tableName, playerToAdd.toItem());

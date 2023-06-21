@@ -26,6 +26,7 @@ custom:
   deployment: ${file(config/deployment.yml):deployment}
   futBookingTableName: ${self:provider.stage}-fut-booking
   cognitoEmail: ${param:email, ""}
+  cognitoUserPoolName: ${self:provider.stage}-fut-booking
   export-env:
     filename: .awsenv
     overwrite: true
@@ -146,6 +147,25 @@ functions:
             - dynamodb:GetItem
           Resource:
             - !GetAtt FutBookingTable.Arn
+  createPlayer:
+    handler: src/functions/createPlayer/index.handler
+    events:
+      - cognitoUserPool:
+          pool: ${self:custom.cognitoUserPoolName}
+          trigger: PostConfirmation
+          existing: true
+    package:
+      patterns:
+        - src/common/**
+        - package.json
+        - node_modules/**
+        - src/functions/createPlayer/**
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:PutItem
+          Resource:
+            - !GetAtt FutBookingTable.Arn
   getFields:
     handler: src/functions/getFields/index.handler
     events:
@@ -234,7 +254,7 @@ resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
-        UserPoolName: ${self:provider.stage}-fut-booking
+        UserPoolName: ${self:custom.cognitoUserPoolName}
         UsernameAttributes:
           - email
         AutoVerifiedAttributes:

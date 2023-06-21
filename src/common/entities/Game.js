@@ -1,4 +1,5 @@
 import DynamoEntity from "./DynamoEntity.js";
+import { FieldNested } from "./Field.js";
 
 export const GAME_ID = "G#";
 
@@ -9,7 +10,7 @@ export default class Game extends DynamoEntity {
     this.PK = PK || GAME_ID + gameId;
     this.SK = SK || GAME_ID + gameId;
     this.id = id || gameId;
-    this.field = new GameField(field);
+    this.field = new FieldNested(field);
     this.gameWeek = gameWeek;
     this.gameDateTime = gameDateTime;
     this.playersTotal = playersTotal;
@@ -18,7 +19,7 @@ export default class Game extends DynamoEntity {
   setPlayers(players) {
     this.players = players;
     this.playersJoined = players.length;
-  } 
+  }
 
   getSimplifiedObject() {
     const simplifiedGame = {
@@ -28,25 +29,12 @@ export default class Game extends DynamoEntity {
       gameDateTime: this.gameDateTime,
       playersTotal: this.playersTotal
     };
-    
-    if(this.players) {
+
+    if (this.players) {
       simplifiedGame.players = this.players.map(p => p.getSimplifiedObject());
       simplifiedGame.playersJoined = this.playersJoined;
     }
 
     return simplifiedGame;
-  }
-}
-
-export class GameField {
-  constructor({ id, location, locationGM, photoURL }) {
-    this.id = id;
-    this.location = location;
-    this.locationGM = locationGM;
-    this.photoURL = photoURL;
-  }
-
-  getSimplifiedObject() {
-    return JSON.parse(JSON.stringify(this));
   }
 }

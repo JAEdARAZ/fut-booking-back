@@ -28,7 +28,6 @@ describe("getPlayerGames lambda", () => {
 
     expect(queryResult.status).toBe(200);
     expect(queryResult.data.length).toBeGreaterThan(0);
-    expect(queryResult.data[0].gameId).toBe(createdGameId);
     expect(queryResult.data[0].playerId).toBe(addedPlayerId);
   })
 

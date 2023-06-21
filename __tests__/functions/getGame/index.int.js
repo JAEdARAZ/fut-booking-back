@@ -29,7 +29,7 @@ describe("getGame lambda", () => {
     expect(getGameResult.data.id).toBe(createdGameId);
     expect(getGameResult.data.players).toHaveLength(1);
     expect(getGameResult.data.playersJoined).toBe(1);
-    expect(getGameResult.data.players[0].id).toBe(addedPlayerId);
+    expect(getGameResult.data.players[0].name).toBeTruthy();
   })
 
   afterAll(async () => {

@@ -9,7 +9,7 @@ export default class Field extends DynamoEntity {
     const fieldId = this.generateId();
     this.PK = PK || FIELD_PK;
     this.SK = SK || FIELD_ID + fieldId;
-    this.id = id || fieldId;
+    this.id = id || fieldId;
     this.location = location;
     this.locationGM = locationGM;
     this.photoURL = photoURL;
@@ -22,5 +22,18 @@ export default class Field extends DynamoEntity {
       locationGM: this.locationGM,
       photoURL: this.photoURL
     }
+  }
+}
+
+export class FieldNested {
+  constructor({ id, location, locationGM, photoURL }) {
+    this.id = id;
+    this.location = location;
+    this.locationGM = locationGM;
+    this.photoURL = photoURL;
+  }
+
+  getSimplifiedObject() {
+    return JSON.parse(JSON.stringify(this));
   }
 }

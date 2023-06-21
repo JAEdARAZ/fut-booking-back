@@ -1,5 +1,6 @@
 import DynamoEntity from "./DynamoEntity.js";
-import { GAME_ID, GameField } from "./Game.js";
+import { FieldNested } from "./Field.js";
+import { GAME_ID } from "./Game.js";
 import { PLAYER_ID, PlayerNested } from "./Player.js";
 
 export default class GamePlayer extends DynamoEntity {
@@ -8,7 +9,7 @@ export default class GamePlayer extends DynamoEntity {
     this.PK = PK.startsWith(GAME_ID) ? PK : GAME_ID + PK;
     this.SK = SK.startsWith(PLAYER_ID) ? SK : PLAYER_ID + SK;
     this.gameDateTime = gameDateTime;
-    this.field = new GameField(field);
+    this.field = new FieldNested(field);
     this.player = new PlayerNested(player);
   }
 

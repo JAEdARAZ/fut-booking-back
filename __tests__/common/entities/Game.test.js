@@ -1,4 +1,5 @@
-import Game, { GAME_ID, GameField } from "../../../src/common/entities/Game.js";
+import { FieldNested } from "../../../src/common/entities/Field.js";
+import Game, { GAME_ID } from "../../../src/common/entities/Game.js";
 
 describe("Game entity", () => {
   it("Create new Game", () => {
@@ -18,7 +19,7 @@ describe("Game entity", () => {
     expect(actual.id).toBeTruthy();
     expect(actual.PK).toBe(GAME_ID + actual.id);
     expect(actual.SK).toBe(GAME_ID + actual.id);
-    expect(actual.field).toBeInstanceOf(GameField);
+    expect(actual.field).toBeInstanceOf(FieldNested);
     expect(actual.gameWeek).toBe(params.gameWeek);
     expect(actual.gameDateTime).toBe(params.gameDateTime);
     expect(actual.playersTotal).toBe(params.playersTotal);
@@ -44,7 +45,7 @@ describe("Game entity", () => {
     expect(actual.id).toBe(params.id);
     expect(actual.PK).toBe(params.PK);
     expect(actual.SK).toBe(params.SK);
-    expect(actual.field).toBeInstanceOf(GameField);
+    expect(actual.field).toBeInstanceOf(FieldNested);
     expect(actual.gameWeek).toBe(params.gameWeek);
     expect(actual.gameDateTime).toBe(params.gameDateTime);
     expect(actual.playersTotal).toBe(params.playersTotal);

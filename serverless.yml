@@ -128,8 +128,8 @@ functions:
             - dynamodb:Query
           Resource:
             - !Sub '${FutBookingTable.Arn}/index/*'
-  addPlayer:
-    handler: src/functions/addPlayer/index.handler
+  gameAddPlayer:
+    handler: src/functions/gameAddPlayer/index.handler
     events:
       - httpApi:
           method: POST
@@ -139,7 +139,7 @@ functions:
         - src/common/**
         - package.json
         - node_modules/**
-        - src/functions/addPlayer/**
+        - src/functions/gameAddPlayer/**
     iamRoleStatements:
         - Effect: "Allow"
           Action:

@@ -1,6 +1,7 @@
+import axios from "axios";
 import { config } from "dotenv";
+import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
-import { resolve, dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,6 +15,13 @@ config({
 export default {
   testEnvironment: "node",
   roots: ['../__tests__/'],
-  testMatch: ['**/*.int.js'],
+  testMatch: ['**/*.inte.js'],
   testTimeout: 60000 * 2 //2 minutes
-} 
+}
+
+export const apiAxios = axios.create({
+  baseURL: `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`,
+  headers: {
+    Authorization: `Bearer ${process.env.cognitoUserIdToken}`
+  }
+})

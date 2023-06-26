@@ -32,10 +32,13 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    - name: Run integration tests
-      run: npm run integration
+    - name: Create cognito user and get auth token
+      run: ./config/getAuthToken.sh
       env:
         USER_POOL_ID: ${{ secrets.USER_POOL_ID }}
         USER_POOL_CLIENT_ID: ${{ secrets.USER_POOL_CLIENT_ID }}
+    - name: Run integration tests
+      run: npm run integration
+      env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

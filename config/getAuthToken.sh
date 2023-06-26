@@ -1,11 +1,6 @@
 USERNAME=$(node config/credsGenerator.js GENERATE_EMAIL)
 PASSWORD=$(node config/credsGenerator.js GENERATE_PASS)
 
-echo $USERNAME
-echo $PASSWORD
-echo $USER_POOL_ID
-echo $USER_POOL_CLIENT_ID
-
 COGNITO_USER_SUB=$(aws cognito-idp admin-create-user \
   --username $USERNAME \
   --user-pool-id $USER_POOL_ID \
@@ -13,6 +8,9 @@ COGNITO_USER_SUB=$(aws cognito-idp admin-create-user \
   --message-action SUPPRESS \
   --output text \
   --query User.Username)
+
+echo "user sub"
+echo $COGNITO_USER_SUB
 
 aws cognito-idp admin-set-user-password \
   --user-pool-id $USER_POOL_ID \
@@ -26,6 +24,9 @@ ID_TOKEN=$(aws cognito-idp initiate-auth \
   --auth-parameters USERNAME=$USERNAME,PASSWORD=$PASSWORD \
   --query AuthenticationResult.IdToken \
   --output text)
+
+echo "id token"
+echo $ID_TOKEN
 
 echo "" >> .awsenv
 echo "cognitoUserIdToken=$ID_TOKEN" >> .awsenv

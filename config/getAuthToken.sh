@@ -1,6 +1,11 @@
 USERNAME=$(node config/credsGenerator.js GENERATE_EMAIL)
 PASSWORD=$(node config/credsGenerator.js GENERATE_PASS)
 
+echo $USERNAME
+echo $PASSWORD
+echo $USER_POOL_ID
+echo $USER_POOL_CLIENT_ID
+
 COGNITO_USER_SUB=$(aws cognito-idp admin-create-user \
   --username $USERNAME \
   --user-pool-id $USER_POOL_ID \

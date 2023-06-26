@@ -1,4 +1,9 @@
 source .awsenv
+
+if [ -f ".env.local" ]; then
+    source .env.local
+fi
+
 USERNAME=$(node config/credsGenerator.js GENERATE_EMAIL)
 PASSWORD=$(node config/credsGenerator.js GENERATE_PASS)
 

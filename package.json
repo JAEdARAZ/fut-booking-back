@@ -6,7 +6,8 @@
   "scripts": {
     "export-env-local": "sls export-env --all",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --config config/unit.jest.config.js",
-    "integration": "NODE_OPTIONS=--experimental-vm-modules jest --config config/integration.jest.config.js"
+    "integration": "NODE_OPTIONS=--experimental-vm-modules jest --config config/integration.jest.config.js",
+    "integration:local": "npm run export-env-local && ./config/getAuthToken.sh &&  NODE_OPTIONS=--experimental-vm-modules jest --config config/integration.jest.config.js"
   },
   "keywords": [],
   "author": "",

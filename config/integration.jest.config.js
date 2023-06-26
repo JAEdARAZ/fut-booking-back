@@ -15,7 +15,7 @@ config({
 export default {
   testEnvironment: "node",
   roots: ['../__tests__/'],
-  testMatch: ['**/*.inte.js'],
+  testMatch: ['**/*.int.js'],
   testTimeout: 60000 * 2 //2 minutes
 }
 

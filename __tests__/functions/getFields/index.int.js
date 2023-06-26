@@ -1,9 +1,8 @@
-import axios from "axios";
-axios.defaults.baseURL = `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`;
+import { apiAxios } from "../../../config/integration.jest.config.js";
 
 describe("getFields lambda", () => {
   it("Get fields, responds 200 OK", async () => {
-    const actual = await axios.get("/fields");
+    const actual = await apiAxios.get("/fields");
     expect(actual.status).toBe(200);
   })
 })

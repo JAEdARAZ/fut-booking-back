@@ -1,8 +1,7 @@
-import axios from "axios";
+import { apiAxios } from "../../../config/integration.jest.config.js";
 import DynamoAdapter from "../../../src/common/adapter/DynamoAdapter.js";
 import { FIELD_ID, FIELD_PK } from "../../../src/common/entities/Field.js";
 import { ErrorTypes } from "../../../src/common/middy/AppError.js";
-axios.defaults.baseURL = `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`;
 
 describe("createField lambda", () => {
   let createdFieldId;
@@ -14,7 +13,7 @@ describe("createField lambda", () => {
       photoURL: "https://s3.amazonaws.com/rails-camp-tutorials/blog/programming+memes/works-doesnt-work.jpg"
     }
 
-    const actual = await axios.post("/fields", payload);
+    const actual = await apiAxios.post("/fields", payload);
     createdFieldId = actual.data.id;
 
     expect(actual.data.id).toMatch(new RegExp(/^[a-z0-9]{32}$/));
@@ -34,7 +33,7 @@ describe("createField lambda", () => {
 
     let actual;
     try {
-      await axios.post("/fields", payload);
+      await apiAxios.post("/fields", payload);
     } catch (error) {
       actual = error.response.data;
     }

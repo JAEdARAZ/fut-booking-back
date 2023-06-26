@@ -1,9 +1,8 @@
-import axios from "axios";
-import { ErrorTypes } from "../../../src/common/middy/AppError";
+import { apiAxios } from "../../../config/integration.jest.config.js";
 import DynamoAdapter from "../../../src/common/adapter/DynamoAdapter";
 import { GAME_ID } from "../../../src/common/entities/Game";
 import { PLAYER_ID } from "../../../src/common/entities/Player";
-axios.defaults.baseURL = `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`;
+import { ErrorTypes } from "../../../src/common/middy/AppError";
 
 describe("addPlayer lambda", () => {
   let createdGameId;
@@ -17,7 +16,7 @@ describe("addPlayer lambda", () => {
       fieldId: "F1"
     }
 
-    const createResult = await axios.post("/games", payload);
+    const createResult = await apiAxios.post("/games", payload);
     createdGameId = createResult.data.id;
   })
 
@@ -26,7 +25,7 @@ describe("addPlayer lambda", () => {
       playerId: "XYZ"
     }
 
-    const actual = await axios.post(`/games/${createdGameId}/players`, payload);
+    const actual = await apiAxios.post(`/games/${createdGameId}/players`, payload);
     createdGameId = actual.data.gameId;
     addedPlayerId = actual.data.playerId;
 
@@ -43,7 +42,7 @@ describe("addPlayer lambda", () => {
 
     let invalidCreateResult;
     try {
-      await axios.post(`/games/${gameId}/players`, payload);
+      await apiAxios.post(`/games/${gameId}/players`, payload);
     } catch (error) {
       invalidCreateResult = error.response.data;
     }
@@ -52,7 +51,7 @@ describe("addPlayer lambda", () => {
   })
 
   afterAll(async () => {
-    await axios.delete(`/games/${createdGameId}`);
+    await apiAxios.delete(`/games/${createdGameId}`);
     const db = new DynamoAdapter();
     await db.deleteItem(process.env.futBookingTableName, GAME_ID + createdGameId, PLAYER_ID + addedPlayerId);
   })

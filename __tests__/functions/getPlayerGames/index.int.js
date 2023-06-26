@@ -1,15 +1,15 @@
-import axios from "axios";
+import { apiAxios } from "../../../config/integration.jest.config.js";
 import DynamoAdapter from "../../../src/common/adapter/DynamoAdapter";
 import { GAME_ID } from "../../../src/common/entities/Game";
 import { PLAYER_ID } from "../../../src/common/entities/Player";
-axios.defaults.baseURL = `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`;
+apiAxios.defaults.baseURL = `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`;
 
 describe("getPlayerGames lambda", () => {
   let createdGameId;
   let addedPlayerId;
 
   beforeAll(async () => {
-    const createResult = await axios.post("/games", {
+    const createResult = await apiAxios.post("/games", {
       gameDate: "2023-06-20",
       gameTime: "22:00",
       playersTotal: 16,
@@ -17,14 +17,14 @@ describe("getPlayerGames lambda", () => {
     });
     createdGameId = createResult.data.id;
 
-    const addPlayerResult = await axios.post(`/games/${createdGameId}/players`, {
+    const addPlayerResult = await apiAxios.post(`/games/${createdGameId}/players`, {
       playerId: "XYZ"
     });
     addedPlayerId = addPlayerResult.data.playerId;
   })
 
   it("Get player games, responds 200 OK", async () => {
-    const queryResult = await axios.get(`/players/${addedPlayerId}/games`);
+    const queryResult = await apiAxios.get(`/players/${addedPlayerId}/games`);
 
     expect(queryResult.status).toBe(200);
     expect(queryResult.data.length).toBeGreaterThan(0);
@@ -32,7 +32,7 @@ describe("getPlayerGames lambda", () => {
   })
 
   afterAll(async () => {
-    await axios.delete(`/games/${createdGameId}`);
+    await apiAxios.delete(`/games/${createdGameId}`);
     const db = new DynamoAdapter();
     await db.deleteItem(process.env.futBookingTableName, GAME_ID + createdGameId, PLAYER_ID + addedPlayerId);
   })

@@ -47,7 +47,6 @@ describe("Get Player Games business logic", () => {
   it("Simplify response", () => {
     const playerGames = [playerGame1, playerGame2];
     const simplifiedGames = simplifyResponse(playerGames);
-    console.log(simplifiedGames);
 
     expect(simplifiedGames).toHaveLength(2);
     expect(simplifiedGames[0].playerId).toBe("XXX");

@@ -77,6 +77,8 @@ functions:
       - httpApi:
           method: GET
           path: /games
+          authorizer:
+            name: userAuthorizer
     package:
       patterns:
         - src/common/**
@@ -95,6 +97,8 @@ functions:
       - httpApi:
           method: POST
           path: /games
+          authorizer:
+            name: userAuthorizer
     package:
       patterns:
         - src/common/**
@@ -119,6 +123,8 @@ functions:
       - httpApi:
           method: DELETE
           path: /games/{gameId}
+          authorizer:
+            name: userAuthorizer
     package:
       patterns:
         - src/common/**
@@ -137,6 +143,8 @@ functions:
       - httpApi:
           method: GET
           path: /players/{playerId}/games
+          authorizer:
+            name: userAuthorizer
     package:
       patterns:
         - src/common/**
@@ -155,6 +163,8 @@ functions:
       - httpApi:
           method: POST
           path: /games/{gameId}/players
+          authorizer:
+            name: userAuthorizer
     package:
       patterns:
         - src/common/**
@@ -193,6 +203,8 @@ functions:
       - httpApi:
           method: GET
           path: /fields
+          authorizer:
+            name: userAuthorizer
     package:
       patterns:
         - src/common/**
@@ -211,6 +223,8 @@ functions:
       - httpApi:
           method: POST
           path: /fields
+          authorizer:
+            name: userAuthorizer
     package:
       patterns:
         - src/common/**

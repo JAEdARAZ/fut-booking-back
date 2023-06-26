@@ -1,6 +1,5 @@
-import axios from "axios";
+import { apiAxios } from "../../../config/integration.jest.config.js";
 import { ErrorTypes } from "../../../src/common/middy/AppError.js";
-axios.defaults.baseURL = `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`;
 
 describe("createGame lambda", () => {
   it("Create new game, responds 200 OK", async () => {
@@ -11,8 +10,8 @@ describe("createGame lambda", () => {
       fieldId: "F1"
     }
 
-    const createResult = await axios.post("/games", payload);
-    const deleteResult = await axios.delete(`/games/${createResult.data.id}`, payload);
+    const createResult = await apiAxios.post("/games", payload);
+    const deleteResult = await apiAxios.delete(`/games/${createResult.data.id}`, payload);
 
     expect(createResult.status).toBe(201);
     expect(deleteResult.status).toBe(204);
@@ -26,16 +25,16 @@ describe("createGame lambda", () => {
       fieldId: "F1"
     }
 
-    const createResult = await axios.post("/games", payload);
+    const createResult = await apiAxios.post("/games", payload);
 
     let duplicateCreateResult;
     try {
-      await axios.post("/games", payload);
+      await apiAxios.post("/games", payload);
     } catch (error) {
       duplicateCreateResult = error.response.data;
     }
 
-    const deleteResult = await axios.delete(`/games/${createResult.data.id}`, payload);
+    const deleteResult = await apiAxios.delete(`/games/${createResult.data.id}`, payload);
 
     expect(createResult.status).toBe(201);
     expect(duplicateCreateResult.statusCode).toBe(ErrorTypes.GAME_ALREADY_EXISTS.statusCode);
@@ -52,7 +51,7 @@ describe("createGame lambda", () => {
 
     let actual;
     try {
-      await axios.post("/games", payload);
+      await apiAxios.post("/games", payload);
     } catch (error) {
       actual = error.response.data;
     }

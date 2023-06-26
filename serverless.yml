@@ -6,6 +6,7 @@ frameworkVersion: "3"
 plugins:
   - serverless-iam-roles-per-function
   - serverless-export-env
+  - serverless-output-to-env
 
 provider:
   name: aws
@@ -43,6 +44,11 @@ custom:
   export-env:
     filename: .awsenv
     overwrite: true
+  outputToEnv:
+    fileName: .slsoutput
+    map:
+      USER_POOL_ID: UserPoolId
+      USER_POOL_CLIENT_ID: UserPoolClientId
 
 functions:
   getGame:
@@ -332,3 +338,10 @@ resources:
       Properties:
         UserPoolId: !Ref CognitoUserPool 
         Domain: fut-booking
+  Outputs:
+    UserPoolId:
+      Value:
+        Ref: CognitoUserPool
+    UserPoolClientId: 
+      Value:
+        Ref: CognitoUserPoolClient

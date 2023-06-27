@@ -6,7 +6,7 @@ frameworkVersion: "3"
 plugins:
   - serverless-iam-roles-per-function
   - serverless-export-env
-  - serverless-output-to-env
+  - serverless-stack-output
 
 provider:
   name: aws
@@ -44,11 +44,8 @@ custom:
   export-env:
     filename: .awsenv
     overwrite: true
-  outputToEnv:
-    fileName: .slsoutput
-    map:
-      USER_POOL_ID: UserPoolId
-      USER_POOL_CLIENT_ID: UserPoolClientId
+  output:
+    file: slsoutput.toml
 
 functions:
   getGame:

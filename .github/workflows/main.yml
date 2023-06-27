@@ -31,7 +31,6 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     - name: Run integration tests
       run: |
-        cat slsoutput.json
         npm run export-env-local
         ./config/getAuthToken.sh
         npm run integration

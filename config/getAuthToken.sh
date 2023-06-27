@@ -20,13 +20,15 @@ aws cognito-idp admin-set-user-password \
   --password $PASSWORD \
   --permanent
 
-ID_TOKEN=$(aws cognito-idp initiate-auth \
+ID_TOKEN=$(aws cognito-idp admin-initiate-auth \
   --region $region \
+  --user-pool-id $USER_POOL_ID \
   --client-id $USER_POOL_CLIENT_ID \
-  --auth-flow USER_PASSWORD_AUTH \
+  --auth-flow ADMIN_USER_PASSWORD_AUTH \
   --auth-parameters USERNAME=$USERNAME,PASSWORD=$PASSWORD \
   --query AuthenticationResult.IdToken \
   --output text)
 
 echo "" >> .awsenv
 echo "cognitoUserIdToken=$ID_TOKEN" >> .awsenv
+echo "congitoUsername=$USERNAME" >> .awsenv

@@ -45,7 +45,7 @@ custom:
     filename: .awsenv
     overwrite: true
   output:
-    file: slsoutput.toml
+    file: slsoutput.json
 
 functions:
   getGame:

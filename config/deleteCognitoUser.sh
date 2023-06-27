@@ -1,5 +1,7 @@
 source .awsenv
-source .slsoutput
+
+USER_POOL_ID=$(jq -r '.UserPoolId' slsoutput.json)
+USER_POOL_CLIENT_ID=$(jq -r '.UserPoolClientId' slsoutput.json)
 
 aws cognito-idp admin-delete-user \
   --region $region \

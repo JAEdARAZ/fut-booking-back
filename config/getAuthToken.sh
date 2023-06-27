@@ -1,10 +1,7 @@
 source .awsenv
-source .slsoutput
 
-# USER_POOL_ID=$(jq -r '.prueba' slsoutput.json)
-# USER_POOL_CLIENT_ID=$(jq -r '.prueba' slsoutput.json)
-USER_POOL_ID=$UserPoolId
-USER_POOL_CLIENT_ID=$UserPoolClientId
+USER_POOL_ID=$(jq -r '.UserPoolId' slsoutput.json)
+USER_POOL_CLIENT_ID=$(jq -r '.UserPoolClientId' slsoutput.json)
 
 USERNAME=$(node config/credsGenerator.js GENERATE_EMAIL)
 PASSWORD=$(node config/credsGenerator.js GENERATE_PASS)

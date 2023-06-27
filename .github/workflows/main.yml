@@ -22,7 +22,6 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: ${{secrets.ROLE_ARN}}
-        role-session-name: FutBookingGHActionsSession
         aws-region: us-east-1
     - name: Install dependencies
       run: npm ci

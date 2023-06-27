@@ -32,7 +32,7 @@ jobs:
     - name: Run integration tests
       run: |
         ls
-        slsoutput.toml
+        cat slsoutput.toml
         cat slsoutput.toml | tr -d "[:blank:]" > .slsoutput
         rm slsoutput.toml
         cat .slsoutput

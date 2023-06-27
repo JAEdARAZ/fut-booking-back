@@ -21,7 +21,7 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
-        role-to-assume: arn:aws:iam::${{secrets.ACCOUNT_ID}}:role/GitHubFutBooking-AssumeRoleWithAction
+        role-to-assume: ${{secrets.ROLE_ARN}}
         role-session-name: FutBookingGHActionsSession
         aws-region: us-east-1
     - name: Install dependencies

@@ -38,5 +38,7 @@ jobs:
       run: |
         npm run export-env-local
         ./config/getAuthToken.sh
+        echo "hereee"
+        echo $MY_TEST_VAR
         npm run integration
         ./config/deleteCognitoUser.sh

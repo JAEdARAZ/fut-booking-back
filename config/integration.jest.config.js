@@ -19,6 +19,9 @@ export default {
   testTimeout: 60000 * 2 //2 minutes
 }
 
+console.log("HEREEE");
+console.log(process.env.MY_TEST_VAR);
+
 export const apiAxios = axios.create({
   baseURL: `https://${process.env.httpApiGatewayEndpointId}.execute-api.${process.env.region}.amazonaws.com`,
   headers: {

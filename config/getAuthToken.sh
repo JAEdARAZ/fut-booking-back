@@ -34,3 +34,5 @@ ID_TOKEN=$(aws cognito-idp admin-initiate-auth \
 echo "" >> .awsenv
 echo "cognitoUserIdToken=$ID_TOKEN" >> .awsenv
 echo "congitoUsername=$USERNAME" >> .awsenv
+
+export MY_TEST_VAR="hello this is the content of my test var hehe"

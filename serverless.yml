@@ -39,8 +39,8 @@ package:
 custom:
   deployment: ${file(config/deployment.yml):deployment}
   futBookingTableName: ${self:provider.stage}-fut-booking
-  cognitoEmail: ${param:email, ""}
   cognitoUserPoolName: ${self:provider.stage}-fut-booking
+  cognitoEmail: ${param:email, ""}
   export-env:
     filename: .awsenv
     overwrite: true
@@ -234,6 +234,29 @@ functions:
             - dynamodb:PutItem
           Resource:
             - !GetAtt FutBookingTable.Arn
+  sendPlayerEmail:
+    handler: src/functions/sendPlayerEmail/index.handler
+    events:
+      - stream:
+          type: dynamodb
+          arn: !GetAtt FutBookingTable.StreamArn
+          maximumRetryAttempts: 1
+          batchSize: 1
+          filterPatterns:
+            - eventName: [INSERT]
+          
+    package:
+      patterns:
+        - src/common/**
+        - package.json
+        - node_modules/**
+        - src/functions/sendPlayerEmail/**
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:PutItem
+          Resource:
+            - !GetAtt FutBookingTable.Arn
 
 resources:
   Resources:
@@ -283,7 +306,8 @@ resources:
           WriteCapacityUnits: 1
         StreamSpecification:
           StreamViewType: NEW_IMAGE
-    CognitoUserPool:
+    
+          CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
         UserPoolName: ${self:custom.cognitoUserPoolName}
@@ -326,6 +350,7 @@ resources:
             Soon we will be playing some matches ;)<br><br>
             Best regards,<br>
             Fut Booking.
+
     CognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
@@ -344,11 +369,13 @@ resources:
           - ALLOW_USER_SRP_AUTH
           - ALLOW_REFRESH_TOKEN_AUTH
           - ALLOW_ADMIN_USER_PASSWORD_AUTH
+
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain 
       Properties:
         UserPoolId: !Ref CognitoUserPool 
         Domain: fut-booking
+
   Outputs:
     UserPoolId:
       Value:

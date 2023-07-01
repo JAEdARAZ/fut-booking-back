@@ -244,6 +244,14 @@ functions:
           batchSize: 1
           filterPatterns:
             - eventName: [INSERT]
+              dynamodb:
+                Keys:
+                  PK:
+                    S:
+                      - prefix: G#
+                  SK:
+                    S:
+                      - prefix: P#
           
     package:
       patterns:
@@ -307,7 +315,7 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_IMAGE
     
-          CognitoUserPool:
+    CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
         UserPoolName: ${self:custom.cognitoUserPoolName}

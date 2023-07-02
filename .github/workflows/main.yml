@@ -32,11 +32,7 @@ jobs:
         branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
         echo "branch_name_upper=${branch^^}" >> $GITHUB_OUTPUT
     - name: Test
-      run: |
-        echo steps.vars.outputs.COGNITO_FROM_EMAIL
-        echo $MY_TEST_ENV
-      env: 
-        MY_TEST_ENV: steps.vars.outputs.COGNITO_FROM_EMAIL
+      run: echo steps.vars.outputs.branch_name_upper
     - name: Install dependencies
       run: npm ci
     - name: Run unit tests
@@ -47,6 +43,7 @@ jobs:
         args: deploy
       env:
         COGNITO_FROM_EMAIL: ${{ secrets[steps.vars.outputs.COGNITO_FROM_EMAIL] }}
+        COGNITO_FROM_EMAIL: ${{ secrets[format('COGNITO_FROM_EMAIL_{0}', steps.vars.outputs.branch_name_upper)] }}
     - name: Run integration tests
       run: |
         npm run export-env-local

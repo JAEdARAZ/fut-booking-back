@@ -17,7 +17,6 @@ provider:
     futBookingTableName: ${self:custom.futBookingTableName}
     httpApiGatewayEndpointId: !Ref HttpApi
     region: ${self:provider.region}
-    myEmailTest: ${env:COGNITO_FROM_EMAIL}
   httpApi:
     authorizers:
       userAuthorizer:

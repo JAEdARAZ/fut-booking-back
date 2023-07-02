@@ -15,6 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.363.0",
+    "@aws-sdk/util-dynamodb": "^3.363.0",
     "@middy/core": "^4.5.1",
     "@middy/http-error-handler": "^4.5.1",
     "@middy/http-json-body-parser": "^4.5.1",

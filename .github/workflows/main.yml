@@ -42,7 +42,6 @@ jobs:
       with:
         args: deploy
       env:
-        COGNITO_FROM_EMAIL: ${{ secrets[steps.vars.outputs.COGNITO_FROM_EMAIL] }}
         COGNITO_FROM_EMAIL: ${{ secrets[format('COGNITO_FROM_EMAIL_{0}', steps.vars.outputs.branch_name_upper)] }}
     - name: Run integration tests
       run: |

@@ -1,7 +1,7 @@
-import { SESClient, SendEmailCommand, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
+import { SESClient, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
 
 export const TEMPLATES = {
-  playerJoinedGame: "first_template"
+  playerJoinedGame: "player-joined-game-template"
 }
 const CHARSET_UTF8 = "UTF-8";
 
@@ -12,39 +12,14 @@ export default class SESAdapter {
     });
   }
 
-  async sendEmail(emailTo, subject, body) {
-    const command = new SendEmailCommand({
-      Source: "mysuperemailsource@nomail.com",
-      Destination: {
-        ToAddresses: [emailTo]
-      },
-      Message: {
-        Subject: {
-          Charset: CHARSET_UTF8,
-          Data: subject
-        },
-        Body: {
-          Html: {
-            Charset: CHARSET_UTF8,
-            Data: body
-          }
-        }
-      }
-    });
-
-    await this.sesSendCommand(command);
-  }
-
-  async sendTemplatedEmail(template, emailTo) {
+  async sendTemplatedEmail(template, emailTo, templateData) {
     const command = new SendTemplatedEmailCommand({
       Source: "mysuperemailsource@nomail.com",
       Destination: {
         ToAddresses: [emailTo]
       },
       Template: template,
-      TemplateData: JSON.stringify({
-        test: "test"
-      })
+      TemplateData: JSON.stringify(templateData)
     });
 
     await this.sesSendCommand(command);

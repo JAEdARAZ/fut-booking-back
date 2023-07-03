@@ -1,10 +1,34 @@
-module.exports = async (serverless, options) => {
-  const template = {
-    name: 'first_template',
-    subject: 'First subject',
-    html: '<h1>Hello world!</h1>',
-    text: 'Hello world!',
-  };
+const path = require("path");
+const mjml2html = require("mjml");
+const htmlToText = require("html-to-text");
 
-  return [template];
+const templatesList = [
+  {
+    templateId: "player-joined-game-template",
+    templateSubject: "[FUT BOOKING] Joined the game successfully!"
+  }
+];
+
+module.exports = async (serverless, options) => {
+  const sesEmailTemplates = templatesList.map(templateInfo => {
+    const { templateId, templateSubject } = templateInfo;
+    const templatePath = path.join(__dirname, `templates/${templateId}.mjml`);
+    const templateHtml = getHtmlTemplate(serverless, templatePath);
+    const templateText = htmlToText.convert(templateHtml, { wordwrap: 130 });
+
+    return {
+      name: templateId,
+      subject: templateSubject,
+      html: templateHtml,
+      text: templateText,
+    };
+  });
+
+  return sesEmailTemplates;
+}
+
+function getHtmlTemplate(serverless, templatePath) {
+  const mjmlTemplate = serverless.utils.readFileSync(templatePath);
+  const { html } = mjml2html(mjmlTemplate);
+  return html;
 }

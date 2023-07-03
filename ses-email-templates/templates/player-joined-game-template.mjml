@@ -1,0 +1,21 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-divider border-color="#3c0ac4"></mj-divider>
+        <mj-text font-size="20px" color="#3c0ac4" font-family="helvetica">
+          You have joined the game successfully!
+        </mj-text>
+        <mj-text font-size="16px" color="#000000">
+          · Location: {{location}}
+        </mj-text>
+        <mj-text font-size="16px" color="#000000">
+          · Date: {{gameDate}}
+        </mj-text>
+        <mj-text font-size="16px" color="#000000">
+          · Time: {{gameTime}}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

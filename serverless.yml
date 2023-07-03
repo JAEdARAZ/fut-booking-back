@@ -9,6 +9,7 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-export-env
   - serverless-stack-output
+  - "@haftahave/serverless-ses-template"
 
 provider:
   name: aws
@@ -38,11 +39,15 @@ custom:
   futBookingTableName: ${self:provider.stage}-fut-booking
   cognitoUserPoolName: ${self:provider.stage}-fut-booking
   cognitoFromEmail: ${env:COGNITO_FROM_EMAIL}
+  # plugins config
   export-env:
     filename: .awsenv
     overwrite: true
   output:
     file: slsoutput.json
+  sesTemplates:
+    configFile: "./ses-email-templates/index.cjs"
+#    deployHook: 'after:deploy:deploy'
 
 package:
   individually: true

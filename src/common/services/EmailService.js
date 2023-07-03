@@ -1,4 +1,4 @@
-import SESAdapter from "../adapter/SESAdapter.js";
+import SESAdapter, { TEMPLATES } from "../adapter/SESAdapter.js";
 import { getFormattedDate, getTimeWithoutSeconds } from "../../common/utils.js";
 
 export default class EmailService {
@@ -10,7 +10,7 @@ export default class EmailService {
     const subject = `[FUT BOOKING] Joined game to ${location.toUpperCase()}`;
     const body = this.buildPlayerJoinedBody(gameDateTime, location, locationGM);
 
-    await this.sesAdapter.sendEmail(emailTo, subject, body);
+    await this.sesAdapter.sendTemplatedEmail(TEMPLATES.playerJoinedGame, emailTo);
   }
 
   buildPlayerJoinedBody(gameDateTime, location, locationGM) {

@@ -2,7 +2,9 @@ service: fut-booking-back
 app: fut-booking
 frameworkVersion: "3"
 
+# Locally, using .env file
 useDotenv: true
+
 plugins:
   - serverless-iam-roles-per-function
   - serverless-export-env

@@ -11,3 +11,14 @@ export const getWeekNumber = (date) => {
 
   return `${weekNumber}/${currentYear}`;
 }
+
+export const getFormattedDate = (dateTime) => {
+  const gameDate = dateTime.split("T")[0];
+  const gameDateArr = gameDate.split("-");
+  return `${gameDateArr[2]}/${gameDateArr[1]}/${gameDateArr[0]}`;
+}
+
+export const getTimeWithoutSeconds = (dateTime) => {
+  const gameTime = dateTime.split("T")[1];
+  return gameTime.substring(0, "HH:MM".length);
+}

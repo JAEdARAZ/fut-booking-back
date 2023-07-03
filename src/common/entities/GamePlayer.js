@@ -1,3 +1,4 @@
+import { unmarshall } from "@aws-sdk/util-dynamodb";
 import DynamoEntity from "./DynamoEntity.js";
 import { FieldNested } from "./Field.js";
 import { GAME_ID } from "./Game.js";
@@ -21,5 +22,9 @@ export default class GamePlayer extends DynamoEntity {
       field: this.field.getSimplifiedObject(),
       player: this.player.getSimplifiedObject()
     }
+  }
+
+  static createFromMarshalled(gamePlayer) {
+    return new GamePlayer(unmarshall(gamePlayer));
   }
 }

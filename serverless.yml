@@ -1,7 +1,9 @@
 service: fut-booking-back
 app: fut-booking
-
 frameworkVersion: "3"
+
+# Locally, using .env file
+useDotenv: true
 
 plugins:
   - serverless-iam-roles-per-function
@@ -31,21 +33,21 @@ provider:
         audience:
           Ref: CognitoUserPoolClient
 
-package:
-  individually: true
-  patterns:
-    - "!**/*"
-
 custom:
   deployment: ${file(config/deployment.yml):deployment}
   futBookingTableName: ${self:provider.stage}-fut-booking
   cognitoUserPoolName: ${self:provider.stage}-fut-booking
-  cognitoEmail: ${param:email, ""}
+  cognitoFromEmail: ${env:COGNITO_FROM_EMAIL}
   export-env:
     filename: .awsenv
     overwrite: true
   output:
     file: slsoutput.json
+
+package:
+  individually: true
+  patterns:
+    - "!**/*"
 
 functions:
   getGame:
@@ -346,9 +348,9 @@ resources:
               Priority: 1
         EmailConfiguration:
           EmailSendingAccount: DEVELOPER
-          SourceArn: arn:aws:ses:${self:provider.region}:${aws:accountId}:identity/${self:custom.cognitoEmail}
-          From: Fut Booking <${self:custom.cognitoEmail}>
-          ReplyToEmailAddress: ${self:custom.cognitoEmail}
+          SourceArn: arn:aws:ses:${self:provider.region}:${aws:accountId}:identity/${self:custom.cognitoFromEmail}
+          From: Fut Booking <${self:custom.cognitoFromEmail}>
+          ReplyToEmailAddress: ${self:custom.cognitoFromEmail}
         VerificationMessageTemplate:
           DefaultEmailOption: CONFIRM_WITH_LINK
           EmailSubjectByLink: "[FUT BOOKING] Verification Link"

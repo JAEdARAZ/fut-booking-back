@@ -259,6 +259,11 @@ functions:
                   SK:
                     S:
                       - prefix: P#
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - ses:SendTemplatedEmail
+          Resource: "*"
           
     package:
       patterns:

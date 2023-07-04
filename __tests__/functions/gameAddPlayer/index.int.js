@@ -1,12 +1,11 @@
 import { apiAxios } from "../../../config/integration.jest.config.js";
-import DynamoAdapter from "../../../src/common/adapter/DynamoAdapter";
-import { GAME_ID } from "../../../src/common/entities/Game";
-import { PLAYER_ID } from "../../../src/common/entities/Player";
-import { ErrorTypes } from "../../../src/common/middy/AppError";
+import DynamoAdapter from "../../../src/common/adapter/DynamoAdapter.js";
+import { GAME_ID } from "../../../src/common/entities/Game.js";
+import { PLAYER_ID } from "../../../src/common/entities/Player.js";
+import { ErrorTypes } from "../../../src/common/middy/AppError.js";
 
 describe("addPlayer lambda", () => {
-  let createdGameId;
-  let addedPlayerId;
+  let createdGameId, addedPlayerId;
 
   beforeAll(async () => {
     const payload = {
@@ -21,28 +20,21 @@ describe("addPlayer lambda", () => {
   })
 
   it("Add player, responds 200 OK", async () => {
-    const payload = {
-      playerId: "XYZ"
-    }
-
-    const actual = await apiAxios.post(`/games/${createdGameId}/players`, payload);
+    const actual = await apiAxios.post(`/games/${createdGameId}/players`);
     createdGameId = actual.data.gameId;
     addedPlayerId = actual.data.playerId;
 
     expect(actual.data.gameId).toBe(createdGameId);
-    expect(actual.data.playerId).toBe(payload.playerId);
+    expect(actual.data.playerId).toBe(process.env.congitoUserSub);
     expect(actual.status).toBe(201);
   })
 
   it("Invalid path parameter", async () => {
     const gameId = "123";
-    const payload = {
-      playerId: "XYZ"
-    }
 
     let invalidCreateResult;
     try {
-      await apiAxios.post(`/games/${gameId}/players`, payload);
+      await apiAxios.post(`/games/${gameId}/players`);
     } catch (error) {
       invalidCreateResult = error.response.data;
     }

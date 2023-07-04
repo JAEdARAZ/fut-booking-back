@@ -4,7 +4,7 @@ import schema from "./schema.js";
 
 const lambdaHandler = async (event) => {
   const gameId = event.pathParameters.gameId;
-  const playerId = event.body.playerId;
+  const playerId = event.requestContext.authorizer.jwt.claims.sub;
   const gamesService = new GamesService();
   const playerAdded = await gamesService.addPlayerToGame(gameId, playerId);
 

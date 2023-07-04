@@ -44,8 +44,8 @@ jobs:
     - name: Run integration tests
       run: |
         npm run export-env-local
-        ./config/getAuthToken.sh
+        ./config/pre-integration-script.sh
         npm run integration
-        ./config/deleteCognitoUser.sh
+        ./config/post-integration-script.sh
       env:
         SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}

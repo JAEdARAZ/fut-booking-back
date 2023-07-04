@@ -1,5 +1,6 @@
 source .awsenv
 
+### Create ephemeral Cognito user for testing ###
 USER_POOL_ID=$(jq -r '.UserPoolId' slsoutput.json)
 USER_POOL_CLIENT_ID=$(jq -r '.UserPoolClientId' slsoutput.json)
 
@@ -34,3 +35,17 @@ ID_TOKEN=$(aws cognito-idp admin-initiate-auth \
 echo "" >> .awsenv
 echo "cognitoUserIdToken=$ID_TOKEN" >> .awsenv
 echo "congitoUsername=$USERNAME" >> .awsenv
+echo "congitoUserSub=$COGNITO_USER_SUB" >> .awsenv
+
+### Add Cognito user to DynamoDB Table as a player ###
+PLAYER_PK=" \"PK\": {\"S\": \"P#$COGNITO_USER_SUB\"} "
+PLAYER_SK=" \"SK\": {\"S\": \"P#$COGNITO_USER_SUB\"} "
+PLAYER_ID=" \"id\": {\"S\": \"$COGNITO_USER_SUB\"} "
+PLAYER_NAME=" \"name\": {\"S\": \"Jhon Doe\"} "
+PLAYER_EMAIL=" \"email\": {\"S\": \"$sesFromEmail\"} "
+PLAYER_GENDER=" \"gender\": {\"S\": \"M\"} "
+PLAYER_BIRTHDATE=" \"birthdate\": {\"S\": \"10/10/2010\"} "
+
+aws dynamodb put-item --table-name $futBookingTableName \
+  --item "{ $PLAYER_PK, $PLAYER_SK, $PLAYER_ID, $PLAYER_NAME, $PLAYER_EMAIL, $PLAYER_GENDER, $PLAYER_BIRTHDATE }" \
+  --region $region

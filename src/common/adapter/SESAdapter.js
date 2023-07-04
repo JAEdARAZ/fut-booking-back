@@ -3,7 +3,6 @@ import { SESClient, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
 export const TEMPLATES = {
   playerJoinedGame: "player-joined-game-template"
 }
-const CHARSET_UTF8 = "UTF-8";
 
 export default class SESAdapter {
   constructor() {
@@ -14,7 +13,7 @@ export default class SESAdapter {
 
   async sendTemplatedEmail(template, emailTo, templateData) {
     const command = new SendTemplatedEmailCommand({
-      Source: "mysuperemailsource@nomail.com",
+      Source: process.env.sesFromEmail,
       Destination: {
         ToAddresses: [emailTo]
       },

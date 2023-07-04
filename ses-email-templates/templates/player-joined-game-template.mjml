@@ -1,21 +1,45 @@
 <mjml>
-  <mj-body>
-    <mj-section>
-      <mj-column>
-        <mj-divider border-color="#3c0ac4"></mj-divider>
-        <mj-text font-size="20px" color="#3c0ac4" font-family="helvetica">
-          You have joined the game successfully!
-        </mj-text>
-        <mj-text font-size="16px" color="#000000">
-          · Location: {{location}}
-        </mj-text>
-        <mj-text font-size="16px" color="#000000">
-          · Date: {{gameDate}}
-        </mj-text>
-        <mj-text font-size="16px" color="#000000">
-          · Time: {{gameTime}}
-        </mj-text>
-      </mj-column>
-    </mj-section>
+  <mj-head>
+    <mj-raw>
+      <meta name="color-scheme" content="light" />
+      <meta name="supported-color-schemes" content="light" />
+    </mj-raw>
+    <mj-attributes>
+      <mj-text font-family="Trebuchet MS" color="#301A45" font-size="16px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#FAFAFA">
+    <mj-wrapper border-radius="8px" padding="15px">
+      <mj-section background-color="#7337AD" border-radius="8px 8px 0 0">
+      </mj-section>
+      <mj-section background-color="#FFFFFF" border-radius="0 0 8px 8px">
+        <mj-column>
+          <mj-text font-size="22px" font-weight="600" align="center">
+						You have joined the game successfully!
+          </mj-text>
+          <mj-spacer />
+          <mj-text align="center">
+						<b>{{location}}</b>
+          </mj-text>
+          <mj-text align="center">
+						<b>{{gameDate}}</b>
+          </mj-text>
+          <mj-text align="center">
+						<b>{{gameTime}}</b>
+          </mj-text>
+					<mj-spacer />
+          <mj-button background-color="#7337AD" border-radius="20px" font-size="16px" font-weight="600" href="https://www.superlinktomyfutbookingwebsite.no">See the game on the website</mj-button>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+    <mj-wrapper border-radius="8px" padding="15px">
+      <mj-section background-color="#FFFFFF" border-radius="8px">
+        <mj-column>
+          <mj-text align="center">
+            Any problem? Contact me at <b style="color: #7337AD">needhelp@nomail.com</b>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
   </mj-body>
 </mjml>

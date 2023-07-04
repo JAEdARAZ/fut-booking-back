@@ -20,6 +20,7 @@ provider:
     futBookingTableName: ${self:custom.futBookingTableName}
     httpApiGatewayEndpointId: !Ref HttpApi
     region: ${self:provider.region}
+    sesFromEmail: ${self:custom.sesFromEmail}
   httpApi:
     authorizers:
       userAuthorizer:
@@ -38,7 +39,7 @@ custom:
   deployment: ${file(config/deployment.yml):deployment}
   futBookingTableName: ${self:provider.stage}-fut-booking
   cognitoUserPoolName: ${self:provider.stage}-fut-booking
-  cognitoFromEmail: ${env:COGNITO_FROM_EMAIL}
+  sesFromEmail: ${env:SES_FROM_EMAIL}
   # plugins config
   export-env:
     filename: .awsenv
@@ -353,9 +354,9 @@ resources:
               Priority: 1
         EmailConfiguration:
           EmailSendingAccount: DEVELOPER
-          SourceArn: arn:aws:ses:${self:provider.region}:${aws:accountId}:identity/${self:custom.cognitoFromEmail}
-          From: Fut Booking <${self:custom.cognitoFromEmail}>
-          ReplyToEmailAddress: ${self:custom.cognitoFromEmail}
+          SourceArn: arn:aws:ses:${self:provider.region}:${aws:accountId}:identity/${self:custom.sesFromEmail}
+          From: Fut Booking <${self:custom.sesFromEmail}>
+          ReplyToEmailAddress: ${self:custom.sesFromEmail}
         VerificationMessageTemplate:
           DefaultEmailOption: CONFIRM_WITH_LINK
           EmailSubjectByLink: "[FUT BOOKING] Verification Link"

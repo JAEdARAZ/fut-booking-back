@@ -259,12 +259,6 @@ functions:
                   SK:
                     S:
                       - prefix: P#
-    iamRoleStatements:
-        - Effect: "Allow"
-          Action:
-            - ses:SendTemplatedEmail
-          Resource: "*"
-          
     package:
       patterns:
         - src/common/**
@@ -274,9 +268,8 @@ functions:
     iamRoleStatements:
         - Effect: "Allow"
           Action:
-            - dynamodb:PutItem
-          Resource:
-            - !GetAtt FutBookingTable.Arn
+            - ses:SendTemplatedEmail
+          Resource: "*"
 
 resources:
   Resources:

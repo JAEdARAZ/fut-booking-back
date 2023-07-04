@@ -48,7 +48,6 @@ custom:
     file: slsoutput.json
   sesTemplates:
     configFile: "./ses-email-templates/index.cjs"
-#    deployHook: 'after:deploy:deploy'
 
 package:
   individually: true

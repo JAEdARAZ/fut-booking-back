@@ -24,7 +24,7 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
-        role-to-assume: ${{secrets.ROLE_ARN}}
+        role-to-assume: ${{ secrets.ROLE_ARN }}
         aws-region: us-east-1
     - name: Create variables
       id: vars
@@ -40,10 +40,12 @@ jobs:
       with:
         args: deploy
       env:
-        SES_FROM_EMAIL: ${{ secrets[format('SES_FROM_EMAIL_{0}', steps.vars.outputs.branch_name_upper)] }}
+        SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
     - name: Run integration tests
       run: |
         npm run export-env-local
         ./config/getAuthToken.sh
         npm run integration
         ./config/deleteCognitoUser.sh
+      env:
+        SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
